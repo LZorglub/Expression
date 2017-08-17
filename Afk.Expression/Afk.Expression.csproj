@@ -31,10 +31,10 @@
     <PackageId>Afk.Expression</PackageId>
     <PackageVersion>1.0.0.0</PackageVersion>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>expression syntax analyzer</PackageTags>
+    <PackageTags>expression syntax analyzer parser</PackageTags>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl></PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
+    <PackageProjectUrl>https://github.com/LZorglub/Expression</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/LZorglub/Expression/master/expression.png</PackageIconUrl>
     <Authors>Luc</Authors>
     <Title>Expression</Title>
     <Copyright>Copyright 2010</Copyright>
