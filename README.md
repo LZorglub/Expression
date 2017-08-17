@@ -53,6 +53,23 @@ Console.WriteLine(eval.Evaluate());
 ```
 
 ## Functions
+External function can be defined
+```
+    private void OnFunctionHandler(object sender, UserFunctionEventArgs e)
+    {
+        if (e.Name == "Concat")
+        {
+            e.Result = string.Join("", e.Parameters);
+        }
+    }
+
+ExpressionEval eval = new ExpressionEval("Concat('The ', 'dogs ', 'barks') + '.'");
+eval.AddFunctions("Concat");
+
+eval.UserFunctionEventHandler += OnFunctionHandler;
+Console.WriteLine(eval.Evaluate());
+>>> The dogs barks
+```
 
 # External Links
 
