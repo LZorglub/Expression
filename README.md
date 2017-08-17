@@ -31,7 +31,7 @@ Console.WriteLine(eval.Evaluate());
 ## Variables
 Expression allows you to use variables evaluated on execution
 ```
-ExpressionEval eval = new ExpressionEval("5 * x + x");
+ExpressionEval eval = new ExpressionEval("5 * x + y");
 eval.AddVariable("x"); eval.AddVariable("y");
 eval.UserExpressionEventHandler += (s, e) => {
     if (e.Name == "x")
@@ -44,6 +44,13 @@ Console.WriteLine(eval.Evaluate());
 ```
 
 ## Constants
+Constants can be added to the expression
+```
+ExpressionEval eval = new ExpressionEval("pi");
+eval.AddConstant("pi", 3.14);
+Console.WriteLine(eval.Evaluate());
+>>> 3.14
+```
 
 ## Functions
 
