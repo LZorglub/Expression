@@ -15,16 +15,22 @@ namespace Afk.Expression
     {
         private List<string> variables;
         private List<string> functions;
+
         private Dictionary<string, object> constants;
+
+        private CaseSensitivity caseSensitivity;
 
         /// <summary>
         /// Initialize a new instance of <see cref="ExpressionArguments"/>
         /// </summary>
-        public ExpressionArguments()
+        /// <param name="caseSensitivity"></param>
+        public ExpressionArguments(CaseSensitivity caseSensitivity)
         {
             variables = new List<string>();
             functions = new List<string>();
             constants = new Dictionary<string, object>();
+
+            this.caseSensitivity = caseSensitivity;
         }
 
         /// <summary>
@@ -79,9 +85,8 @@ namespace Afk.Expression
         /// Gets the constant value
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="caseSensitivity"></param>
         /// <returns></returns>
-        public object GetConstantValue(string name, CaseSensitivity caseSensitivity)
+        public object GetConstantValue(string name)
         {
             if ((caseSensitivity & Afk.Expression.CaseSensitivity.UserConstants) == Afk.Expression.CaseSensitivity.UserConstants)
             {

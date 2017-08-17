@@ -35,7 +35,7 @@ namespace Afk.Expression
         /// <summary>
         /// Initialize a new instance of <see cref="ExpressionParser"/>
         /// </summary>
-        public ExpressionParser(string expression) : this(expression, new ExpressionArguments(), CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction)
+        public ExpressionParser(string expression) : this(expression, new ExpressionArguments(CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction), CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction)
         {
         }
 
@@ -340,7 +340,7 @@ namespace Afk.Expression
                         if (m.Success && (mRet == null || m.Index < mRet.Index))
                         {
                             mRet = m;
-                            val = this.arguments.GetConstantValue(m.Value, this.caseSensitivity);
+                            val = this.arguments.GetConstantValue(m.Value);
                         }
                     }
                 }

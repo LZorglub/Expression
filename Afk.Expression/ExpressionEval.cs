@@ -34,7 +34,7 @@ namespace Afk.Expression
         public ExpressionEval(string expression, CaseSensitivity caseSensitivity = CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction)
         {
             this.Expression = expression;
-            this.arguments = new ExpressionArguments();
+            this.arguments = new ExpressionArguments(caseSensitivity);
             this.arguments.PropertyChanged += OnArgumentChanged;
 
             this.caseSensitivity = caseSensitivity;
