@@ -8,13 +8,39 @@ namespace UnitTestEval
     public class UnitTest1
     {
         [TestMethod]
+        public void TestSimpleFormula()
+        {
+            ExpressionEval eval = new ExpressionEval("5 * (3 + 8)");
+            Assert.AreEqual(eval.Evaluate(), 55d);
+        }
+
+        [TestMethod]
+        public void TestSimpleStringFormula()
+        {
+            ExpressionEval eval = new ExpressionEval("'one ' + 'and' + ' two'");
+            Assert.AreEqual(eval.Evaluate(), "one and two");
+        }
+
+        [TestMethod]
+        public void TestBoolean()
+        {
+            ExpressionEval eval = new ExpressionEval("true or false");
+            Assert.AreEqual(eval.Evaluate(), true);
+        }
+
+        [TestMethod]
         public void TestArithmetic()
         {
-            ExpressionEval eval = new ExpressionEval("5 * x + x");
-            eval.AddVariable("x"); 
-            eval.UserExpressionEventHandler += OnUserExpression;
+            ExpressionEval eval = new ExpressionEval("5 * x + y");
+            eval.AddVariable("x"); eval.AddVariable("y");
+            eval.UserExpressionEventHandler += (s, e) => {
+                if (e.Name == "x")
+                    e.Result = 8d;
+                else if (e.Name == "y")
+                    e.Result = 5d;
+            }; 
             var result = eval.Evaluate();
-            Assert.AreEqual(result, 48d);
+            Assert.AreEqual(result, 45d);
         }
 
         [TestMethod]

@@ -50,6 +50,16 @@ namespace Afk.Expression
         }
 
         /// <summary>
+        /// Add user variables in expression
+        /// </summary>
+        /// <param name="names"></param>
+        public void AddVariables(string[] names)
+        {
+            foreach(string name in names)
+                this.arguments.AddVariable(name);
+        }
+
+        /// <summary>
         /// Adds a user function in expression
         /// </summary>
         /// <param name="name"></param>
