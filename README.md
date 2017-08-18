@@ -1,5 +1,5 @@
 # Expression
-**Afk.Expression** is an expression parser/evaluation.
+**Afk.Expression** is an expression parser/evaluation. Expression is parse only once and use to evaluate differents inputs (variables, constants, functions).
 
 # Version
 The library is compatible with netstandard, net40, net45 and net46
