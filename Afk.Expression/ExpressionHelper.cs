@@ -17,13 +17,12 @@ namespace Afk.Expression
         /// Builds an <see cref="System.Linq.Expressions.Expression"/> from <see cref="IExpression"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="expr"></param>
         /// <param name="expressionFunc"></param>
-        /// <param name="ignoreCase"></param>
         /// <returns></returns>
-        public static System.Linq.Expressions.Expression<Func<T, bool>> BuildLambda<T>(IExpression expr, 
-            Func<System.Linq.Expressions.Expression, string, System.Linq.Expressions.Expression> expressionFunc,
-            bool ignoreCase)
+        public static System.Linq.Expressions.Expression<Func<T, TResult>> BuildLambda<T, TResult>(IExpression expr, 
+            Func<System.Linq.Expressions.Expression, string, System.Linq.Expressions.Expression> expressionFunc)
         {
             if (expr == null) throw new ArgumentNullException(nameof(expr));
 
@@ -32,7 +31,7 @@ namespace Afk.Expression
             ParameterExpression argParam = System.Linq.Expressions.Expression.Parameter(typeof(T), "s");
             System.Linq.Expressions.Expression exp = BuildLambda(parse, argParam, expressionFunc);
 
-            System.Linq.Expressions.Expression<Func<T, bool>> lambda = System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(exp, argParam);
+            System.Linq.Expressions.Expression<Func<T, TResult>> lambda = System.Linq.Expressions.Expression.Lambda<Func<T, TResult>>(exp, argParam);
 
             return lambda;
         }

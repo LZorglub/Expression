@@ -121,6 +121,22 @@ namespace UnitTestEval
             Assert.AreEqual(result, "quand la caravane PASSE les chiens aboient.");
         }
 
+        [TestMethod]
+        public void TestBuildLambaExpression()
+        {
+            ExpressionEval expr = new ExpressionEval("8+x");
+            expr.AddVariable("x");
+
+            var lambda = ExpressionHelper.BuildLambda<string, double>(expr,
+                (e, name) =>
+                System.Linq.Expressions.Expression.Convert(
+                    System.Linq.Expressions.Expression.Property(e, "Length"), 
+                    typeof(double)))
+                .Compile();
+
+            Assert.AreEqual(lambda("test"), 12);
+        }
+
         private void OnFunctionHandler(object sender, UserFunctionEventArgs e)
         {
             if (e.Name == "Concat")
