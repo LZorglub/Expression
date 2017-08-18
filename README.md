@@ -9,20 +9,20 @@ The easiest way to install is by using [NuGet](https://www.nuget.org/packages/Af
 
 # HowTo
 This library allows you to enter complex expressions which will be evaluated and calculated on demand.
-```
+``` c#
 ExpressionEval eval = new ExpressionEval("5 * (3 + 8)");
 Console.WriteLine(eval.Evaluate());
 >>> 55
 ```
 
 String and boolean expression can be evaluated too
-```
+``` c#
 ExpressionEval eval = new ExpressionEval("'one ' + 'and' + ' two'");
 Console.WriteLine(eval.Evaluate());
 >>> one and two
 ```
 
-```
+``` c#
 ExpressionEval eval = new ExpressionEval("true or false");
 Console.WriteLine(eval.Evaluate());
 >>> true
@@ -30,7 +30,7 @@ Console.WriteLine(eval.Evaluate());
 
 ## Variables
 Expression allows you to use variables evaluated on execution
-```
+``` c#
 ExpressionEval eval = new ExpressionEval("5 * x + y");
 eval.AddVariable("x"); eval.AddVariable("y");
 eval.UserExpressionEventHandler += (s, e) => {
@@ -45,7 +45,7 @@ Console.WriteLine(eval.Evaluate());
 
 ## Constants
 Constants can be added to the expression
-```
+``` c#
 ExpressionEval eval = new ExpressionEval("pi");
 eval.AddConstant("pi", 3.14);
 Console.WriteLine(eval.Evaluate());
@@ -54,7 +54,7 @@ Console.WriteLine(eval.Evaluate());
 
 ## Functions
 External function can be defined
-```
+``` c#
     private void OnFunctionHandler(object sender, UserFunctionEventArgs e)
     {
         if (e.Name == "Concat")
