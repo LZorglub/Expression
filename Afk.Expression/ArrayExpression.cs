@@ -56,14 +56,14 @@ namespace Afk.Expression
         /// <returns></returns>
         public object Evaluate()
         {
-            return this.Evaluate(null);
+            return this.Evaluate(Guid.Empty);
         }
 
         /// <summary>
         /// Evaluates the expression
         /// </summary>
         /// <returns></returns>
-        public object Evaluate(int? correlationId)
+        public object Evaluate(Guid correlationId)
         {
             if (!this.parsed)
             {
@@ -88,7 +88,7 @@ namespace Afk.Expression
         /// <param name="expression"></param>
         /// <param name="correlationId"></param>
         /// <returns></returns>
-        private object[] GetParameters(string expression, int? correlationId)
+        private object[] GetParameters(string expression, Guid correlationId)
         {
             string expr = "";
             int nIdx = 0;
@@ -141,7 +141,7 @@ namespace Afk.Expression
         /// <param name="expr">Expression à évaluer</param>
         /// <param name="correlationId"></param>
         /// <returns>Objet évalué</returns>
-        private object EvaluateParameter(string expr, int? correlationId)
+        private object EvaluateParameter(string expr, Guid correlationId)
         {
             ExpressionParser eval = new ExpressionParser(expr, this.arguments, this.caseSensitivity);
 

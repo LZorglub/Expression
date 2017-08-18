@@ -30,10 +30,10 @@ namespace Afk.Expression
 
         public object Evaluate()
         {
-            return this.Evaluate(null);
+            return this.Evaluate(Guid.Empty);
         }
 
-        public object Evaluate(int? correlationId)
+        public object Evaluate(Guid correlationId)
         {
             return Op.Do(Operand, correlationId);
         }

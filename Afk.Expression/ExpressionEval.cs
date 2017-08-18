@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -94,14 +95,47 @@ namespace Afk.Expression
         /// <returns></returns>
         public object Evaluate()
         {
-            return this.Evaluate(null);
+            return this.Evaluate(Guid.Empty);
         }
+
+        //public object Evaluate(object values, Guid correlationId)
+        //{
+        //    return this.Evaluate(null);
+        //}
+
+//        public Dictionary<string, object> ParseArguments(object argument)
+//        {
+//            if (argument == null)
+//            {
+//                return new Dictionary<string, object>();
+//            }
+
+//#if NETSTANDARD
+//            var argumentType = argument.GetType().GetTypeInfo();
+
+//            var properties = argumentType.DeclaredProperties.Where(p => p.CanRead);
+
+//            var arguments = properties.ToDictionary(property => property.Name,
+//                property => property.GetValue(argument, null));
+
+//            return arguments;
+//#else
+//            var argumentType = argument.GetType();
+
+//            var properties = argumentType.GetProperties().Where(p => p.CanRead);
+
+//            var arguments = properties.ToDictionary(property => property.Name,
+//                property => property.GetValue(argument, null));
+
+//            return arguments;
+//#endif
+//        }
 
         /// <summary>
         /// Evaluate the expression
         /// </summary>
         /// <returns></returns>
-        public object Evaluate(int? correlationId) {
+        public object Evaluate(Guid correlationId) {
 			this.Parse();
 
 			if (bTree != null) return EvaluateObject(bTree, correlationId);
@@ -162,7 +196,7 @@ namespace Afk.Expression
         /// <param name="node">Noeud à évaluer</param>
         /// <param name="correlationId"></param>
         /// <returns>Valeur de l'objet évalué</returns>
-        private object EvaluateObject(object node, int? correlationId)
+        private object EvaluateObject(object node, Guid correlationId)
         {
             if (node is IExpression)
                 return ((IExpression)node).Evaluate(correlationId);

@@ -21,7 +21,7 @@ namespace Afk.Expression
         /// </summary>
         /// <param name="name"></param>
         /// <param name="correlationId"></param>
-        public UserExpressionEventArgs(string name, int? correlationId)
+        public UserExpressionEventArgs(string name, Guid correlationId)
         {
             this.Name = name;
             this.CorrelationId = correlationId;
@@ -35,7 +35,7 @@ namespace Afk.Expression
         /// <summary>
         /// Gets the correlation id
         /// </summary>
-        public int? CorrelationId { get; private set; }
+        public Guid CorrelationId { get; private set; }
 
         /// <summary>
         /// Gets the result of user expression

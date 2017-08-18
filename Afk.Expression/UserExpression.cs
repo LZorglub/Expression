@@ -40,14 +40,14 @@ namespace Afk.Expression
         /// <returns></returns>
         public object Evaluate()
         {
-            return this.Evaluate(null);
+            return this.Evaluate(Guid.Empty);
         }
 
         /// <summary>
         /// Evalate the user expression
         /// </summary>
         /// <returns></returns>
-        public object Evaluate(int? correlationId)
+        public object Evaluate(Guid correlationId)
         {
             if (UserExpressionHandler != null)
             {

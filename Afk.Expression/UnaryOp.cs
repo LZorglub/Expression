@@ -34,7 +34,7 @@ namespace Afk.Expression
         /// <param name="v"></param>
         /// <param name="correlationId"></param>
         /// <returns></returns>
-        public object Do(object v, int? correlationId)
+        public object Do(object v, Guid correlationId)
         {
             IExpression tempv = v as IExpression;
             if (tempv != null)

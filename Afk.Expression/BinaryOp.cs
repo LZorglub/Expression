@@ -40,7 +40,7 @@ namespace Afk.Expression
         /// <param name="caseSensitivity"></param>
         /// <param name="correlationId"></param>
         /// <returns></returns>
-        public object DoBinaryOp(object v1, object v2, CaseSensitivity caseSensitivity, int? correlationId)
+        public object DoBinaryOp(object v1, object v2, CaseSensitivity caseSensitivity, Guid correlationId)
         {
             IExpression tv = v1 as IExpression;
             if (tv != null)
@@ -112,7 +112,7 @@ namespace Afk.Expression
         /// <param name="caseSensitivity"></param>
         /// <param name="correlationId"></param>
         /// <returns></returns>
-        private object DoBinarySimpleOp(object v1, object v2, CaseSensitivity caseSensitivity, int? correlationId)
+        private object DoBinarySimpleOp(object v1, object v2, CaseSensitivity caseSensitivity, Guid correlationId)
         {
             IExpression tv = v1 as IExpression;
             if (tv != null)

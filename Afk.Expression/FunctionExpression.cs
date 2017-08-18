@@ -43,14 +43,14 @@ namespace Afk.Expression
         /// </summary>
         /// <returns></returns>
         public object Evaluate() {
-            return this.Evaluate(null);
+            return this.Evaluate(Guid.Empty);
         }
 
         /// <summary>
         /// Evaluate the user expression
         /// </summary>
         /// <returns></returns>
-        public object Evaluate(int? correlationId)
+        public object Evaluate(Guid correlationId)
         {
             if (FunctionHandler != null)
             {
@@ -78,7 +78,7 @@ namespace Afk.Expression
         /// Evaluates the function parameters
         /// </summary>
         /// <returns></returns>
-        private object[] EvaluateParameters(int? correlationId)
+        private object[] EvaluateParameters(Guid correlationId)
         {
             if (this.Parameters == null) return null;
             if (this.Parameters.Length == 0) return new object[] { };
@@ -97,7 +97,7 @@ namespace Afk.Expression
         /// <param name="node"></param>
         /// <param name="correlationId"></param>
         /// <returns></returns>
-        private object EvaluateObject(object node, int? correlationId)
+        private object EvaluateObject(object node, Guid correlationId)
         {
             if (node is IExpression)
                 return ((IExpression)node).Evaluate(correlationId);

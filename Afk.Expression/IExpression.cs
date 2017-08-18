@@ -27,7 +27,7 @@ namespace Afk.Expression
         /// </summary>
         /// <param name="correlationId"></param>
         /// <returns></returns>
-        object Evaluate(int? correlationId);
+        object Evaluate(Guid correlationId);
 
         /// <summary>
         /// Reduces the expression

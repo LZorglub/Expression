@@ -45,10 +45,10 @@ namespace Afk.Expression
 
         public object Evaluate()
         {
-            return this.Evaluate(null);
+            return this.Evaluate(Guid.Empty);
         }
 
-        public object Evaluate(int? correlationId)
+        public object Evaluate(Guid correlationId)
         {
             return Op.DoBinaryOp(Operand1, Operand2, CaseSensitivity, correlationId);
         }
@@ -68,7 +68,7 @@ namespace Afk.Expression
             // If operands are not IExpression we can evaluate immediatly
             if (!(op1 is IExpression) && !(op2 is IExpression))
             {
-                return Op.DoBinaryOp(op1, op2, CaseSensitivity, 0);
+                return Op.DoBinaryOp(op1, op2, CaseSensitivity, Guid.Empty);
             }
 
             return new BinaryNode()

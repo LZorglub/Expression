@@ -87,14 +87,14 @@ namespace Afk.Expression
         /// <returns></returns>
         public object Evaluate()
         {
-            return this.Evaluate(null);
+            return this.Evaluate(Guid.Empty);
         }
 
         /// <summary>
         /// Evaluate the parser
         /// </summary>
         /// <returns></returns>
-        public object Evaluate(int? correlationId)
+        public object Evaluate(Guid correlationId)
         {
             if (regUserExpression == null && this.arguments.Variables.Count > 0)
             {
@@ -161,7 +161,7 @@ namespace Afk.Expression
         /// Gets the bTree of current expression
         /// </summary>
         /// <returns></returns>
-        private object BuildTree(int? correlationId)
+        private object BuildTree(Guid correlationId)
         {
             Match mRet = null;
             int nIdx = 0;
