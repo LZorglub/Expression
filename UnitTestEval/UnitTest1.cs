@@ -128,13 +128,11 @@ namespace UnitTestEval
             expr.AddVariable("x");
 
             var lambda = ExpressionHelper.BuildLambda<string, double>(expr,
-                (e, name) =>
-                System.Linq.Expressions.Expression.Convert(
-                    System.Linq.Expressions.Expression.Property(e, "Length"), 
-                    typeof(double)))
+                (e, name) => System.Linq.Expressions.Expression.Property(e, "Length"))
                 .Compile();
 
             Assert.AreEqual(lambda("test"), 12);
+            Assert.AreEqual(lambda("12345678"), 16);
         }
 
         private void OnFunctionHandler(object sender, UserFunctionEventArgs e)

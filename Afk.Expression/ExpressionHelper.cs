@@ -13,6 +13,18 @@ namespace Afk.Expression
     /// </summary>
     public class ExpressionHelper
     {
+        static Dictionary<Type, List<Type>> implicitConversions = new Dictionary<Type, List<Type>>()
+        {
+            { typeof(int), new List<Type>(){ typeof(long), typeof(float), typeof(double), typeof(decimal)} },
+            { typeof(short), new List<Type>(){ typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal) } },
+            { typeof(ushort), new List<Type>(){ typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
+            { typeof(uint), new List<Type>(){ typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
+            { typeof(long), new List<Type>(){ typeof(float), typeof(double), typeof(decimal) } },
+            { typeof(char), new List<Type>(){ typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) } },
+            { typeof(float), new List<Type>(){ typeof(double) } },
+            { typeof(ulong), new List<Type>(){ typeof(float), typeof(double), typeof(decimal) } },
+        };
+
         /// <summary>
         /// Builds an <see cref="System.Linq.Expressions.Expression"/> from <see cref="IExpression"/>
         /// </summary>
@@ -98,6 +110,28 @@ namespace Afk.Expression
                                 var concatMethod = typeof(string).GetMethod("Concat", new[] { typeof(object), typeof(object) });
                                 result = System.Linq.Expressions.Expression.Add(e1, e2, concatMethod);
 #endif
+                            }
+                            else if (e1.Type != e2.Type)
+                            {
+                                // Convert e1 to e2
+                                if (implicitConversions.Any(e => e.Key == e1.Type && e.Value.Contains(e2.Type)))
+                                {
+                                    result = System.Linq.Expressions.Expression.Add(
+                                        System.Linq.Expressions.Expression.Convert(e1, e2.Type),
+                                        e2
+                                    );
+                                }
+                                else if (implicitConversions.Any(e => e.Key == e2.Type && e.Value.Contains(e1.Type)))
+                                {
+                                    result = System.Linq.Expressions.Expression.Add(
+                                        e1,
+                                        System.Linq.Expressions.Expression.Convert(e2, e1.Type)
+                                    );
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException($"Can not add {e1.Type.ToString()} and {e2.Type.ToString()}");
+                                }
                             }
                             else
                             {
