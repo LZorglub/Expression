@@ -103,13 +103,8 @@ namespace Afk.Expression
                         {
                             if (e1.Type == typeof(string) || e2.Type == typeof(string))
                             {
-#if NETSTANDARD
                                 var concatMethod = typeof(string).GetRuntimeMethod("Concat", new[] { typeof(object), typeof(object) });
                                 result = System.Linq.Expressions.Expression.Add(e1, e2, concatMethod);
-#else
-                                var concatMethod = typeof(string).GetMethod("Concat", new[] { typeof(object), typeof(object) });
-                                result = System.Linq.Expressions.Expression.Add(e1, e2, concatMethod);
-#endif
                             }
                             else if (e1.Type != e2.Type)
                             {
@@ -163,13 +158,8 @@ namespace Afk.Expression
                     case "like":
                         if (e1.Type == typeof(string) && e2.Type == typeof(string))
                         {
-#if NETSTANDARD
                             MethodInfo mi = typeof(string).GetRuntimeMethod("Contains", new Type[] { typeof(string) });
                             result = System.Linq.Expressions.Expression.Call(e1, mi, e2);
-#else
-                            MethodInfo mi = typeof(string).GetMethod("Contains", new Type[] { typeof(string) });
-                            result = System.Linq.Expressions.Expression.Call(e1, mi, e2);
-#endif
                         }
                         else
                         {

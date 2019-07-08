@@ -98,39 +98,6 @@ namespace Afk.Expression
             return this.Evaluate(Guid.Empty);
         }
 
-        //public object Evaluate(object values, Guid correlationId)
-        //{
-        //    return this.Evaluate(null);
-        //}
-
-//        public Dictionary<string, object> ParseArguments(object argument)
-//        {
-//            if (argument == null)
-//            {
-//                return new Dictionary<string, object>();
-//            }
-
-//#if NETSTANDARD
-//            var argumentType = argument.GetType().GetTypeInfo();
-
-//            var properties = argumentType.DeclaredProperties.Where(p => p.CanRead);
-
-//            var arguments = properties.ToDictionary(property => property.Name,
-//                property => property.GetValue(argument, null));
-
-//            return arguments;
-//#else
-//            var argumentType = argument.GetType();
-
-//            var properties = argumentType.GetProperties().Where(p => p.CanRead);
-
-//            var arguments = properties.ToDictionary(property => property.Name,
-//                property => property.GetValue(argument, null));
-
-//            return arguments;
-//#endif
-//        }
-
         /// <summary>
         /// Evaluate the expression
         /// </summary>
