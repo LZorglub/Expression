@@ -260,5 +260,15 @@ namespace Afk.Expression
             }
             return null;
         }
+
+        /// <summary>
+        /// Extracts user expression from expression
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> Extract(string expression)
+        {
+            return ExpressionParser.Extract(expression);
+        }
     }
 }

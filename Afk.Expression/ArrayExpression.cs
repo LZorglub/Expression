@@ -165,5 +165,59 @@ namespace Afk.Expression
         {
             return "[ArrayExpr]";
         }
+
+        /// <summary>
+        /// Extract expression from list of parameters
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> Extract(string expression)
+        {
+            List<string> userExpressions = new List<string>();
+
+            string expr = "";
+            int nIdx = 0;
+            int nBrackets = 0;
+            int nParenthesis = 0;
+            int nLast = 0;
+            bool bInQuotes = false;
+            List<object> ret = new List<object>();
+
+            if (expression == null || expression == string.Empty)
+                return userExpressions;
+
+            expr = expression;
+
+            try
+            {
+                for (nIdx = 0; nIdx < expr.Length; nIdx++)
+                {
+                    if (!bInQuotes && expr[nIdx] == ']')
+                        nBrackets--;
+                    if (!bInQuotes && expr[nIdx] == '[')
+                        nBrackets++;
+                    if (!bInQuotes && expr[nIdx] == ')')
+                        nParenthesis--;
+                    if (!bInQuotes && expr[nIdx] == '(')
+                        nParenthesis++;
+
+                    if (expr[nIdx] == DefinedRegex.QuoteCharacter)
+                        bInQuotes = !bInQuotes;
+
+                    if (!bInQuotes && nBrackets == 0 && nParenthesis == 0 && expr[nIdx] == ',')
+                    {
+                        userExpressions.AddRange(ExpressionParser.Extract(expr.Substring(nLast, nIdx - nLast)));
+                        nLast = nIdx + 1;
+                    }
+                }
+                userExpressions.AddRange(ExpressionParser.Extract(expr.Substring(nLast, nIdx - nLast)));
+            }
+            catch (ExpressionException e)
+            {
+                throw new ExpressionException(e.Message, nLast, e.Length);
+            }
+
+            return userExpressions;
+        }
     }
 }

@@ -523,5 +523,190 @@ namespace Afk.Expression
             if (node.Operand2 is BinaryNode && !ValidateBinaryNode((BinaryNode)node.Operand2)) return false;
             return true;
         }
-   }
+
+        /// <summary>
+        /// Extract user expression from expression
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> Extract(string expression)
+        {
+            Regex regUserFunction = new Regex(@"(?<Function>\w+)\s*" + DefinedRegex.FunctionParameters, RegexOptions.Compiled);
+            Regex regUserExpression = new Regex(@"(?<Expression>[\w,\.]+)");
+
+            List<string> userExpressions = new List<string>();
+
+            Match mRet = null;
+            int nIdx = 0;
+
+            string currentExpression = expression;
+
+            while (nIdx < currentExpression.Length)
+            {
+                mRet = null;
+
+                // Ignore les caractères séparateurs (espaces, tabs, line feed, new line, carriage return)
+                Match m = DefinedRegex.WhiteSpace.Match(expression, nIdx);
+                if (m.Success && m.Index == nIdx)
+                {
+                    nIdx += m.Length; continue;
+                }
+
+                // Comment line
+                m = DefinedRegex.CommentLine.Match(expression, nIdx);
+                if (m.Success && m.Index == nIdx)
+                {
+                    nIdx += m.Length; continue;
+                }
+
+                // Comment block
+                m = DefinedRegex.CommentBlock.Match(expression, nIdx);
+                if (m.Success && m.Index == nIdx)
+                {
+                    nIdx += m.Length; continue;
+                }
+
+                // Jeu de parenthèses
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.Parenthesis.Match(expression, nIdx);
+                    if (m.Success)
+                    {
+                        mRet = m;
+                        userExpressions.AddRange(Extract(m.Groups["Parenthesis"].Value));
+                    }
+                }
+
+                // Bracket
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.Bracket.Match(expression, nIdx);
+                    if (m.Success)
+                    {
+                        mRet = m;
+                        userExpressions.AddRange(ArrayExpression.Extract(m.Groups["Bracket"].Value));
+                    }
+                }
+
+                // Opérateur unaire
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.UnaryOp.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        mRet = m; 
+                    }
+                }
+
+                // Valeur hexadécimale
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.Hexadecimal.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        mRet = m; 
+                    }
+                }
+
+                // Valeur booléene
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.Boolean.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        mRet = m; 
+                    }
+                }
+
+                // Valeur DateTime
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.DateTime.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        mRet = m; 
+                    }
+                }
+
+                // Valeur numérique
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.Numeric.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        while (m.Success && ("" + m.Value == ""))
+                            m = m.NextMatch();
+                        if (m.Success)
+                        {
+                            mRet = m;
+                        }
+                    }
+                }
+
+                // Chaine de caractère
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.String.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        mRet = m; 
+                    }
+                }
+
+                // Opérateur binaire
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.BinaryOp.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        mRet = m;
+                    }
+                }
+
+                // Function
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    if (regUserFunction != null)
+                    {
+                        m = regUserFunction.Match(expression, nIdx);
+                        if (m.Success && (mRet == null || m.Index < mRet.Index))
+                        {
+                            mRet = m;
+                            // Function name
+                            string functionName = m.Groups["Function"].Value;
+                            userExpressions.Add(functionName);
+                            userExpressions.AddRange(ArrayExpression.Extract(m.Groups["Parenthesis"].Value));
+                        }
+                    }
+                }
+                
+                // Variable utilisateur
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = regUserExpression.Match(expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        userExpressions.Add(m.Value);
+                        mRet = m; 
+                    }
+                }
+
+                if (mRet == null)
+                    throw new ExpressionException("Invalid expression construction: \"" + expression + "\".", nIdx, expression.Length - nIdx);
+
+                if (mRet.Index != nIdx)
+                {
+                    throw new ExpressionException(
+                        "Invalid token in expression: [" +
+                        expression.Substring(nIdx, mRet.Index - nIdx).Trim() + "]",
+                        nIdx, mRet.Index - nIdx
+                        );
+                }
+                
+                nIdx = mRet.Index + mRet.Length;
+            } // End while
+
+            return userExpressions.Distinct();
+        }
+    }
 }
