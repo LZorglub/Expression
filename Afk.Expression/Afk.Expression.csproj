@@ -11,6 +11,8 @@
     <PackageTags>expression syntax analyzer parser</PackageTags>
     <PackageProjectUrl>https://github.com/LZorglub/Expression</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/LZorglub/Expression/master/expression.png</PackageIconUrl>
+    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
