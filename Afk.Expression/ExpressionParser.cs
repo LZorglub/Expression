@@ -98,7 +98,7 @@ namespace Afk.Expression
         {
             if (regUserExpression == null && this.arguments.Variables.Count > 0)
             {
-                string expr = string.Join("|", this.arguments.Variables.Select(e => Regex.Escape(e)).ToArray());
+                string expr = string.Join("|", this.arguments.Variables.OrderByDescending(e => e).Select(e => Regex.Escape(e)).ToArray());
                 regUserExpression = new Regex(expr,
                     ((caseSensitivity & Afk.Expression.CaseSensitivity.UserExpression) == Afk.Expression.CaseSensitivity.UserExpression) ? (RegexOptions.Compiled) : (RegexOptions.Compiled | RegexOptions.IgnoreCase)
                 );
@@ -106,7 +106,7 @@ namespace Afk.Expression
 
             if (regUserFunction == null && this.arguments.Functions.Count > 0)
             {
-                string expr = "(?<Function>" + string.Join("|", this.arguments.Functions.Select(e => Regex.Escape(e)).ToArray()) + @")\s*" + DefinedRegex.FunctionParameters;
+                string expr = "(?<Function>" + string.Join("|", this.arguments.Functions.OrderByDescending(e => e).Select(e => Regex.Escape(e)).ToArray()) + @")\s*" + DefinedRegex.FunctionParameters;
                 regUserFunction = new Regex(expr,
                     ((caseSensitivity & Afk.Expression.CaseSensitivity.UserFunction) == Afk.Expression.CaseSensitivity.UserFunction) ? (RegexOptions.Compiled) : (RegexOptions.Compiled | RegexOptions.IgnoreCase)
                 );
@@ -115,7 +115,7 @@ namespace Afk.Expression
             if (regUserConstant == null && this.arguments.ConstantNames.Count > 0)
             {
                 System.Text.StringBuilder builder = new System.Text.StringBuilder();
-                foreach(string name in this.arguments.ConstantNames)
+                foreach(string name in this.arguments.ConstantNames.OrderByDescending(e => e))
                 {
                     if (builder.Length > 0) builder.Append("|");
                     builder.Append(Regex.Escape(name));
