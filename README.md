@@ -32,7 +32,7 @@ Console.WriteLine(eval.Evaluate());
 ## Variables
 Expression allows you to use variables evaluated on execution
 ```csharp
-ExpressionEval eval = new ExpressionEval("5 * x + y");
+ExpressionEval eval = new ExpressionEval("5 * x2 + y");
 eval.AddVariable("x"); eval.AddVariable("y");
 eval.UserExpressionEventHandler += (s, e) => {
     if (e.Name == "x")
@@ -41,7 +41,7 @@ eval.UserExpressionEventHandler += (s, e) => {
         e.Result = 5d;
 }; 
 Console.WriteLine(eval.Evaluate());
->>> 45
+>>> 325
 ```
 
 ## Constants

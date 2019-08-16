@@ -85,15 +85,16 @@ namespace Afk.Expression
         /// Gets the constant value
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="pow">Optional power</param>
         /// <returns></returns>
-        public object GetConstantValue(string name)
+        public object GetConstantValue(string name, double? pow)
         {
             if ((caseSensitivity & Afk.Expression.CaseSensitivity.UserConstants) == Afk.Expression.CaseSensitivity.UserConstants)
             {
                 // Case sensitive
                 if (!this.constants.ContainsKey(name))
                     throw new ArgumentException(nameof(name));
-                return this.constants[name];
+                return (pow==null) ? this.constants[name] : (Math.Pow((double)this.constants[name], pow.Value));
             }
             else
             {
@@ -103,7 +104,7 @@ namespace Afk.Expression
                 {
                     if (string.Compare(ienum.Current.Key, name, true) == 0)
                     {
-                        return ienum.Current.Value;
+                        return (pow == null) ? ienum.Current.Value : (Math.Pow((double)ienum.Current.Value, pow.Value));
                     }
                 }
                 throw new ArgumentException(nameof(name));

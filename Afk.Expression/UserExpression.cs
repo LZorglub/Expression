@@ -20,9 +20,11 @@ namespace Afk.Expression
         /// Initialize a new isntance of <see cref="UserExpression"/>
         /// </summary>
         /// <param name="expression"></param>
-        public UserExpression(string expression)
+        /// <param name="pow">Optional power</param>
+        public UserExpression(string expression, double? pow = null)
         {
             this.Expression = expression;
+            this.Pow = pow;
         }
 
         /// <summary>
@@ -31,8 +33,12 @@ namespace Afk.Expression
         public string Expression
         {
             get;
-            private set;
         }
+
+        /// <summary>
+        /// Gets or sets optional pow
+        /// </summary>
+        public double? Pow { get; }
 
         /// <summary>
         /// Evalate the user expression
@@ -53,6 +59,7 @@ namespace Afk.Expression
             {
                 UserExpressionEventArgs e = new UserExpressionEventArgs(this.Expression, correlationId);
                 UserExpressionHandler(this, e);
+                if (e.Result != null && this.Pow != null) e.Result = Math.Pow(Convert.ToDouble(e.Result), this.Pow.Value); 
                 return e.Result;
             }
 

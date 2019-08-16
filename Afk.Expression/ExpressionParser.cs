@@ -99,6 +99,7 @@ namespace Afk.Expression
             if (regUserExpression == null && this.arguments.Variables.Count > 0)
             {
                 string expr = string.Join("|", this.arguments.Variables.OrderByDescending(e => e).Select(e => Regex.Escape(e)).ToArray());
+                expr = "(?<usr>" + expr + "){1}(?<pow>[0-9]+)?";
                 regUserExpression = new Regex(expr,
                     ((caseSensitivity & Afk.Expression.CaseSensitivity.UserExpression) == Afk.Expression.CaseSensitivity.UserExpression) ? (RegexOptions.Compiled) : (RegexOptions.Compiled | RegexOptions.IgnoreCase)
                 );
@@ -114,13 +115,9 @@ namespace Afk.Expression
 
             if (regUserConstant == null && this.arguments.ConstantNames.Count > 0)
             {
-                System.Text.StringBuilder builder = new System.Text.StringBuilder();
-                foreach(string name in this.arguments.ConstantNames.OrderByDescending(e => e))
-                {
-                    if (builder.Length > 0) builder.Append("|");
-                    builder.Append(Regex.Escape(name));
-                }
-                regUserConstant = new Regex(builder.ToString(),
+                string expr = string.Join("|", this.arguments.ConstantNames.OrderByDescending(e => e).Select(e => Regex.Escape(e)).ToArray());
+                expr = "(?<cst>" + expr + "){1}(?<pow>[0-9]+)?";
+                regUserConstant = new Regex(expr,
                     ((caseSensitivity & Afk.Expression.CaseSensitivity.UserConstants) == Afk.Expression.CaseSensitivity.UserConstants) ? (RegexOptions.Compiled) : (RegexOptions.Compiled | RegexOptions.IgnoreCase)
                 );
             }
@@ -340,7 +337,11 @@ namespace Afk.Expression
                         if (m.Success && (mRet == null || m.Index < mRet.Index))
                         {
                             mRet = m;
-                            val = this.arguments.GetConstantValue(m.Value);
+
+                            string constant = m.Groups["cst"].Value;
+                            string pow = m.Groups["pow"].Value;
+
+                            val = string.IsNullOrEmpty(pow) ? this.arguments.GetConstantValue(constant, null) : this.arguments.GetConstantValue(constant, Convert.ToDouble(pow));
                         }
                     }
                 }
@@ -353,7 +354,10 @@ namespace Afk.Expression
                         m = regUserExpression.Match(Expression, nIdx);
                         if (m.Success && (mRet == null || m.Index < mRet.Index))
                         {
-                            UserExpression user = new UserExpression(m.Value);
+                            string variable = m.Groups["usr"].Value;
+                            string pow = m.Groups["pow"].Value;
+
+                            UserExpression user = (string.IsNullOrEmpty(pow)) ? new UserExpression(variable) : new UserExpression(variable, Convert.ToDouble(pow));
                             if (this.UserExpressionEventHandler != null)
                                 user.UserExpressionHandler += UserExpressionEventHandler;
                             mRet = m; val = user;
