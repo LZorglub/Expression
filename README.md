@@ -74,7 +74,7 @@ Console.WriteLine(eval.Evaluate());
 
 ## EF Core
 Expression can be used to generate *System.Linq.Expressions.Expression* to request *DbContext*.
-You need to define a **ILambdaExpressionProvider** which provides expression on our entity.
+You need to define a **ILambdaExpressionProvider** which provides expression on your entity.
 
 ```csharp
 class MyLambdaProvider : ILambdaExpressionProvider
