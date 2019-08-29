@@ -16,7 +16,9 @@ namespace Afk.Expression
 
         // Un numeric correspond à une partie entiérer facultative, suivi d'un point et éventuellement
         // d'une élévation à une puissance, il est forcement suivi d'un caractère non alphanumérique
-        private const string c_strNumeric = @"(?:[0-9]+)?(?:\.[0-9]+)?(?:E-?[0-9]+)?(?=\b)";
+        // Old value :  (?:[0-9]+)?(?:\.[0-9]+)?(?:E-?[0-9]+)?(?=\b) match E1 alone
+        // This new one old 5E2 5.5E2 .5E2 but not E2 alone
+        private const string c_strNumeric = @"(?:[0-9]+(?:\.[0-9]+)?|[0-9]*(?:\.[0-9]+){1}){1}(?:E-?[0-9]+)?(?=\b)";
         // Un booleen est soit true soit false
         private const string c_strBool = @"true|false";
         // Un héxadécimal est de la forme 0x suivi d'une série de caractère 0-9 A-F présent au moins une fois
