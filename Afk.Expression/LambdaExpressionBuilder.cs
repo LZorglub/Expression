@@ -184,11 +184,24 @@ namespace Afk.Expression
                             break;
                         case "==":
                         case "=":
-                            result = System.Linq.Expressions.Expression.Equal(e1, e2);
+                            if (e1.Type == e2.Type)
+                            {
+                                result = System.Linq.Expressions.Expression.Equal(e1, e2);
+                            } else
+                            {
+                                result = System.Linq.Expressions.Expression.Equal(e1, System.Linq.Expressions.Expression.Convert(e2, e1.Type));
+                            }
                             break;
                         case "<>":
                         case "!=":
-                            result = System.Linq.Expressions.Expression.NotEqual(e1, e2);
+                            if (e1.Type == e2.Type)
+                            {
+                                result = System.Linq.Expressions.Expression.NotEqual(e1, e2);
+                            }
+                            else
+                            {
+                                result = System.Linq.Expressions.Expression.NotEqual(e1, System.Linq.Expressions.Expression.Convert(e2, e1.Type));
+                            }
                             break;
                         case "&":
                             result = System.Linq.Expressions.Expression.And(e1, e2);

@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <None Include="expression.png" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+  
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>1.3.2.0</Version>
+    <Version>1.3.3.0</Version>
     <Authors>Luc Nempont</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Syntax expression parser/evaluation</Description>
@@ -10,7 +14,7 @@
     <Company />
     <PackageTags>expression syntax analyzer parser</PackageTags>
     <PackageProjectUrl>https://github.com/LZorglub/Expression</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/LZorglub/Expression/master/expression.png</PackageIconUrl>
+    <PackageIcon>expression.png</PackageIcon>
     
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
