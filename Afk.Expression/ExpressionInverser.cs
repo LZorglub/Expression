@@ -89,7 +89,7 @@ namespace Afk.Expression
             var result = new BinaryNode()
             {
                 IsEntity = node.IsEntity,
-                Op = new BinaryOp(inverseOp),
+                Op = new BinaryOp(inverseOp, node.Op.OperatorType),
                 CaseSensitivity = node.CaseSensitivity,
             };
 

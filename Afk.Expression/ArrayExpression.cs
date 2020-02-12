@@ -23,10 +23,11 @@ namespace Afk.Expression
         public event UserFunctionEventHandler UserFunctionEventHandler;
 
         private bool parsed;
-        private CaseSensitivity caseSensitivity;
+        private readonly CaseSensitivity caseSensitivity;
+        private readonly OperatorType operatorType;
         private object[] parameters;
 
-        private ExpressionArguments arguments;
+        private readonly ExpressionArguments arguments;
 
         /// <summary>
         /// Initialize a new instance of <see cref="ArrayExpression"/>
@@ -34,11 +35,13 @@ namespace Afk.Expression
         /// <param name="expression"></param>
         /// <param name="arguments"></param>
         /// <param name="caseSensitivity"></param>
-        public ArrayExpression(string expression, ExpressionArguments arguments, CaseSensitivity caseSensitivity)
+        /// <param name="operatorType"></param>
+        public ArrayExpression(string expression, ExpressionArguments arguments, CaseSensitivity caseSensitivity, OperatorType operatorType)
         {
             this.Expression = expression;
             this.arguments = arguments;
             this.caseSensitivity = caseSensitivity;
+            this.operatorType = operatorType;
         }
 
         /// <summary>
@@ -90,16 +93,16 @@ namespace Afk.Expression
         /// <returns></returns>
         private object[] GetParameters(string expression, Guid correlationId)
         {
-            string expr = "";
-            int nIdx = 0;
+            string expr;
+            int nIdx;
             int nBrackets = 0;
             int nParenthesis = 0;
             int nLast = 0;
             bool bInQuotes = false;
             List<object> ret = new List<object>();
 
-            if (expression == null || expression == string.Empty)
-                return new object[] { };
+            if (string.IsNullOrEmpty(expression))
+                return Array.Empty<object>();
 
             expr = expression;
 
@@ -143,7 +146,7 @@ namespace Afk.Expression
         /// <returns>Objet évalué</returns>
         private object EvaluateParameter(string expr, Guid correlationId)
         {
-            ExpressionParser eval = new ExpressionParser(expr, this.arguments, this.caseSensitivity);
+            ExpressionParser eval = new ExpressionParser(expr, this.arguments, this.caseSensitivity, this.operatorType);
 
             if (this.UserExpressionEventHandler != null)
             {
@@ -175,15 +178,14 @@ namespace Afk.Expression
         {
             List<string> userExpressions = new List<string>();
 
-            string expr = "";
-            int nIdx = 0;
+            string expr;
+            int nIdx;
             int nBrackets = 0;
             int nParenthesis = 0;
             int nLast = 0;
             bool bInQuotes = false;
-            List<object> ret = new List<object>();
 
-            if (expression == null || expression == string.Empty)
+            if (string.IsNullOrEmpty(expression))
                 return userExpressions;
 
             expr = expression;

@@ -12,7 +12,7 @@ namespace Afk.Expression
     public interface ILambdaExpressionProvider
     {
         /// <summary>
-        /// Gets expression which retrieves property "name" from a <see cref="ParameterExpression"/>
+        /// Gets expression which retrieves property "name" from a <see cref="System.Linq.Expressions.ParameterExpression"/>
         /// </summary>
         /// <param name="expression"></param>
         /// <param name="name"></param>

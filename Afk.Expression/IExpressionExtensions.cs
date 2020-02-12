@@ -18,6 +18,7 @@ namespace Afk.Expression
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
         /// <param name="expr"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
         public static System.Linq.Expressions.Expression<Func<T, TResult>> ToLambda<T, TResult>(this IExpression expr, ILambdaExpressionProvider provider)
         {

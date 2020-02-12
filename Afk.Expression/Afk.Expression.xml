@@ -1,0 +1,1003 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Afk.Expression</name>
+    </assembly>
+    <members>
+        <member name="T:Afk.Expression.ArrayExpression">
+            <summary>
+            Represents an array of expressions whch can contains value or <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+        </member>
+        <member name="E:Afk.Expression.ArrayExpression.UserExpressionEventHandler">
+            <summary>
+            Represents the method that handles the user expression event
+            </summary>
+        </member>
+        <member name="E:Afk.Expression.ArrayExpression.UserFunctionEventHandler">
+            <summary>
+            Represents the method that handles the user function event
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.#ctor(System.String,Afk.Expression.ExpressionArguments,Afk.Expression.CaseSensitivity,Afk.Expression.OperatorType)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ArrayExpression"/>
+            </summary>
+            <param name="expression"></param>
+            <param name="arguments"></param>
+            <param name="caseSensitivity"></param>
+            <param name="operatorType"></param>
+        </member>
+        <member name="P:Afk.Expression.ArrayExpression.Expression">
+            <summary>
+            Gets the expression of array
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.Evaluate">
+            <summary>
+            Evaluates the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.Evaluate(System.Guid)">
+            <summary>
+            Evaluates the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.Reduce">
+            <summary>
+            Reduce the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.GetParameters(System.String,System.Guid)">
+            <summary>
+            Return the values of array
+            </summary>
+            <param name="expression"></param>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.EvaluateParameter(System.String,System.Guid)">
+            <summary>
+            Evalue un paramètre
+            </summary>
+            <param name="expr">Expression à évaluer</param>
+            <param name="correlationId"></param>
+            <returns>Objet évalué</returns>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:Afk.Expression.ArrayExpression.Extract(System.String)">
+            <summary>
+            Extract expression from list of parameters
+            </summary>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Afk.Expression.BinaryNode.IsEntity">
+            <summary>
+            Gets or sets if binary node represents an entity (parenthesis)
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryNode.Op">
+            <summary>
+            Gets the binary operator
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryNode.Operand1">
+            <summary>
+            Gets the first operand
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryNode.Operand2">
+            <summary>
+            Gets the second operand
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryNode.CaseSensitivity">
+            <summary>
+            Gets the binary operator sensitivity
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.BinaryNode.Reduce">
+            <summary>
+            Reduces a bianry node
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Afk.Expression.BinaryNode.IsBooleanExpression">
+            <summary>
+            Gets a value which indicates if binary node is a boolean comparaison
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.BinaryNode.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="T:Afk.Expression.BinaryOp">
+            <summary>
+            Represents a binary operator
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryOp.OperatorType">
+            <summary>
+            Gets the operator type
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryOp.Op">
+            <summary>
+            Gets the binary operator
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryOp.Priority">
+            <summary>
+            Gets the binary operator priority
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.BinaryOp.#ctor(System.String,Afk.Expression.OperatorType)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.BinaryOp"/>
+            </summary>
+            <param name="op"></param>
+            <param name="operatorType">Operator type : bianry or arithmetic</param>
+        </member>
+        <member name="M:Afk.Expression.BinaryOp.DoBinaryOp(System.Object,System.Object,Afk.Expression.CaseSensitivity,System.Guid)">
+            <summary>
+            Evaluate the binary operation with the two speicifed operand
+            </summary>
+            <param name="v1"></param>
+            <param name="v2"></param>
+            <param name="caseSensitivity"></param>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.BinaryOp.DoBinarySimpleOp(System.Object,System.Object,Afk.Expression.CaseSensitivity,System.Guid)">
+            <summary>
+            Evaluate binary operation on simple operand
+            </summary>
+            <param name="v1"></param>
+            <param name="v2"></param>
+            <param name="caseSensitivity"></param>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.BinaryOp.DoSpecialOperator(System.Object,System.Object,Afk.Expression.CaseSensitivity)">
+            <summary>
+            Evaluate the binary operation on specified operand
+            </summary>
+            <param name="v1"></param>
+            <param name="v2"></param>
+            <param name="caseSensitivity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.BinaryOpPriority">
+            <summary>
+            Provides priority on operator
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.BinaryOpPriority.GetPriority(System.String)">
+            <summary>
+            Gets the priority of an operator
+            </summary>
+            <param name="op">Operator</param>
+            <returns>Entier représentant le degré de priorité d'une opération binaire.
+            Une valeur elevée représente un degré de priorité bas, la valeur 0 est la priorité
+            maximale accordée à une opération.
+            </returns>
+        </member>
+        <member name="T:Afk.Expression.CaseSensitivity">
+            <summary>
+            Represents the sensitivity of expression
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.CaseSensitivity.None">
+            <summary>
+            Not case sensitive
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.CaseSensitivity.UserExpression">
+            <summary>
+            Sensitive to user expression
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.CaseSensitivity.UserConstants">
+            <summary>
+            Sensitive to user constants
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.CaseSensitivity.UserFunction">
+            <summary>
+            Sensitive to user functions
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.CaseSensitivity.String">
+            <summary>
+            Sensitive to string
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.DefinedRegex.QuoteCharacter">
+            <summary>
+            Defines the quote character
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.ExpressionArguments">
+            <summary>
+            Represents arguments of expression
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionArguments.#ctor(Afk.Expression.CaseSensitivity)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ExpressionArguments"/>
+            </summary>
+            <param name="caseSensitivity"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionArguments.AddVariable(System.String)">
+            <summary>
+            Adds a new variable in arguments list
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionArguments.AddFunctions(System.String)">
+            <summary>
+            Add a new function in arguments list
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionArguments.AddConstants(System.String,System.Object)">
+            <summary>
+            Adds a new constant in argument list
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="P:Afk.Expression.ExpressionArguments.Variables">
+            <summary>
+            Gets the variables name
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.ExpressionArguments.Functions">
+            <summary>
+            Gets the functions name
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.ExpressionArguments.ConstantNames">
+            <summary>
+            Gets the constant name and value
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionArguments.GetConstantValue(System.String,System.Nullable{System.Double})">
+            <summary>
+            Gets the constant value
+            </summary>
+            <param name="name"></param>
+            <param name="pow">Optional power</param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionArguments.OnPropertyChanged(System.String)">
+            <summary>
+            Occurs when a property changed
+            </summary>
+            <param name="propertyName"></param>
+        </member>
+        <member name="T:Afk.Expression.ExpressionEval">
+            <summary>
+            Represents an expression evaluator
+            </summary>
+        </member>
+        <member name="E:Afk.Expression.ExpressionEval.UserExpressionEventHandler">
+            <summary>
+            Represents the method that handles the user expression event
+            </summary>
+        </member>
+        <member name="E:Afk.Expression.ExpressionEval.UserFunctionEventHandler">
+            <summary>
+            Represents the method that handles the user function event
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.#ctor(System.String,Afk.Expression.CaseSensitivity)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ExpressionEval"/>
+            </summary>
+            <param name="expression">Expression to evaluate</param>
+            <param name="caseSensitivity">Case sensitivity</param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.#ctor(System.String,Afk.Expression.OperatorType,Afk.Expression.CaseSensitivity)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ExpressionEval"/>
+            </summary>
+            <param name="expression">Expression to evaluate</param>
+            <param name="operatorType">Operator type</param>
+            <param name="caseSensitivity">Case sensitivity</param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.AddVariable(System.String)">
+            <summary>
+            Add a user variable in expression
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.AddVariables(System.String[])">
+            <summary>
+            Add user variables in expression
+            </summary>
+            <param name="names"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.AddFunctions(System.String)">
+            <summary>
+            Adds a user function in expression
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.AddConstant(System.String,System.Object)">
+            <summary>
+            Add a user constant in expression
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.OnArgumentChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Occurs when a argument is changed
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.Evaluate">
+            <summary>
+            Evaluate the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.Evaluate(System.Guid)">
+            <summary>
+            Evaluate the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.Parse">
+            <summary>
+            Parse the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.Reduce">
+            <summary>
+            Reduce the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.EvaluateObject(System.Object,System.Guid)">
+            <summary>
+            Evaluation d'un noeud du bTree
+            </summary>
+            <param name="node">Noeud à évaluer</param>
+            <param name="correlationId"></param>
+            <returns>Valeur de l'objet évalué</returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.OnUserExpressionEvaluated(System.Object,Afk.Expression.UserExpressionEventArgs)">
+            <summary>
+            Occurs when an evaluation of user expression is required
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.OnUserFunctionEvaluated(System.Object,Afk.Expression.UserFunctionEventArgs)">
+            <summary>
+            Occurs when an evaluation of user function is required
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="P:Afk.Expression.ExpressionEval.Expression">
+            <summary>
+            Gets the expression of parser
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEval.Extract(System.String)">
+            <summary>
+            Extracts user expression from expression
+            </summary>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.ExpressionException">
+            <summary>
+            Represents an expression exception
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.ExpressionException.Index">
+            <summary>
+            Gets the index of exception
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.ExpressionException.Length">
+            <summary>
+            Gets the length of exception
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.ExpressionException.Message">
+            <summary>
+            Gets the exception message
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionException.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ExpressionException"/>
+            </summary>
+            <param name="msg"></param>
+            <param name="index"></param>
+            <param name="length"></param>
+        </member>
+        <member name="T:Afk.Expression.ExpressionHelper">
+            <summary>
+            Provides method to analyze an <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionHelper.BuildLambda``2(Afk.Expression.IExpression,System.Func{System.Linq.Expressions.Expression,System.String,System.Linq.Expressions.Expression})">
+            <summary>
+            Builds an <see cref="T:System.Linq.Expressions.Expression"/> from <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="expr"></param>
+            <param name="expressionFunc"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.ExpressionParser">
+            <summary>
+            Represents a parser of expression, the evaluation provides a binary tree of <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+        </member>
+        <member name="E:Afk.Expression.ExpressionParser.UserExpressionEventHandler">
+            <summary>
+            Represents the method that handles the user expression event
+            </summary>
+        </member>
+        <member name="E:Afk.Expression.ExpressionParser.UserFunctionEventHandler">
+            <summary>
+            Represents the method that handles the user function event
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.#ctor(System.String)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ExpressionParser"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.#ctor(System.String,Afk.Expression.ExpressionArguments,Afk.Expression.CaseSensitivity,Afk.Expression.OperatorType)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ExpressionParser"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.OnArgumentChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Occurs when an argument changed
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="P:Afk.Expression.ExpressionParser.Expression">
+            <summary>
+            Gets the expression of parser
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.Evaluate">
+            <summary>
+            Evaluate the parser
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.Evaluate(System.Guid)">
+            <summary>
+            Evaluate the parser
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.Reduce">
+            <summary>
+            Reduces the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.BuildTree(System.Guid)">
+            <summary>
+            Gets the bTree of current expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ExpressionParser.Extract(System.String)">
+            <summary>
+            Extract user expression from expression
+            </summary>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.FunctionExpression">
+            <summary>
+            Represents a function
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.FunctionExpression.#ctor(System.String,System.Object[])">
+            <summary>
+            Initialize a new isntance of <see cref="T:Afk.Expression.FunctionExpression"/>
+            </summary>
+            <param name="expression"></param>
+            <param name="parameters"></param>
+        </member>
+        <member name="P:Afk.Expression.FunctionExpression.Expression">
+            <summary>
+            Gets the expression of <see cref="T:Afk.Expression.UserExpression"/>
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.FunctionExpression.Parameters">
+            <summary>
+            Gets the function parameters
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.FunctionExpression.Evaluate">
+            <summary>
+            Evaluate the user expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.FunctionExpression.Evaluate(System.Guid)">
+            <summary>
+            Evaluate the user expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.FunctionExpression.Reduce">
+            <summary>
+            Reduces the function expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.FunctionExpression.EvaluateParameters(System.Guid)">
+            <summary>
+            Evaluates the function parameters
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.FunctionExpression.EvaluateObject(System.Object,System.Guid)">
+            <summary>
+            Evaluates a object
+            </summary>
+            <param name="node"></param>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.FunctionExpression.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="T:Afk.Expression.IExpression">
+            <summary>
+            Represents an expression
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.IExpression.Expression">
+            <summary>
+            Gets the expression
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.IExpression.Evaluate">
+            <summary>
+            Evaluates the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.IExpression.Evaluate(System.Guid)">
+            <summary>
+            Evaluates the expression using the specified correlation id
+            </summary>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.IExpression.Reduce">
+            <summary>
+            Reduces the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.IExpression.ToPolishString">
+            <summary>
+            Gives representation of expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.IExpressionExtensions">
+            <summary>
+            Extensions for <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.IExpressionExtensions.ToLambda``2(Afk.Expression.IExpression,Afk.Expression.ILambdaExpressionProvider)">
+            <summary>
+            Gets a lambda expression from <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="expr"></param>
+            <param name="provider"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.ILambdaExpressionProvider">
+            <summary>
+            Provides lambda expression
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ILambdaExpressionProvider.GetExpression(System.Linq.Expressions.ParameterExpression,System.String)">
+            <summary>
+            Gets expression which retrieves property "name" from a <see cref="T:System.Linq.Expressions.ParameterExpression"/>
+            </summary>
+            <param name="expression"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.ILambdaExpressionProvider.GetExpression(System.Linq.Expressions.Expression,System.String,System.Linq.Expressions.Expression)">
+            <summary>
+            Gets expression which from two expressions and operand
+            </summary>
+            <param name="left">Left expression</param>
+            <param name="operand">Operand</param>
+            <param name="right">Right expression</param>
+            <returns>Returns expression, if default behavior is expected must return null</returns>
+        </member>
+        <member name="T:Afk.Expression.ITypeExpression">
+            <summary>
+            Implements expression type information
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.ITypeExpression.IsBooleanExpression">
+            <summary>
+            Gets a value which indicates whether the expression is an boolean expression
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.LambdaExpressionBuilder">
+            <summary>
+            Represents a builder of lambda expression from <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.LambdaExpressionBuilder.#ctor(Afk.Expression.ILambdaExpressionProvider)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.LambdaExpressionBuilder"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.LambdaExpressionBuilder.BuildLambda``2(Afk.Expression.IExpression)">
+            <summary>
+            Builds an <see cref="T:System.Linq.Expressions.Expression"/> from <see cref="T:Afk.Expression.IExpression"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="expr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.LambdaExpressionBuilder.BuildLambda(System.Object,System.Linq.Expressions.ParameterExpression)">
+            <summary>
+            Builds lambda expression recursively
+            </summary>
+            <param name="o"></param>
+            <param name="parameter"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.OperatorType">
+            <summary>
+            Represents the type of operator
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.OperatorType.Binary">
+            <summary>
+            Binary operator 
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.OperatorType.Arithmetic">
+            <summary>
+            Arithmetic operator
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UnaryNode.Op">
+            <summary>
+            Get the unary operator
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UnaryNode.Operand">
+            <summary>
+            Gets the unary operand
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UnaryNode.Reduce">
+            <summary>
+            Reduces the expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Afk.Expression.UnaryNode.IsBooleanExpression">
+            <summary>
+            Gets a value which indicates if unary node is boolean
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UnaryNode.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="T:Afk.Expression.UnaryOp">
+            <summary>
+            Represents an unitary operator
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UnaryOp.Op">
+            <summary>
+            Gets the unary operator
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UnaryOp.#ctor(System.String)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.UnaryOp"/>
+            </summary>
+            <param name="op"></param>
+        </member>
+        <member name="M:Afk.Expression.UnaryOp.Do(System.Object,System.Guid)">
+            <summary>
+            Evaluate the unary operator
+            </summary>
+            <param name="v"></param>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Afk.Expression.UserExpression">
+            <summary>
+            Represents an user expression
+            </summary>
+        </member>
+        <member name="E:Afk.Expression.UserExpression.UserExpressionHandler">
+            <summary>
+            Represents the method that handles the user expression event
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UserExpression.#ctor(System.String,System.Nullable{System.Double})">
+            <summary>
+            Initialize a new isntance of <see cref="T:Afk.Expression.UserExpression"/>
+            </summary>
+            <param name="expression"></param>
+            <param name="pow">Optional power</param>
+        </member>
+        <member name="P:Afk.Expression.UserExpression.Expression">
+            <summary>
+            Gets the expression of <see cref="T:Afk.Expression.UserExpression"/>
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UserExpression.Pow">
+            <summary>
+            Gets or sets optional pow
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UserExpression.Evaluate">
+            <summary>
+            Evalate the user expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.UserExpression.Evaluate(System.Guid)">
+            <summary>
+            Evalate the user expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.UserExpression.Reduce">
+            <summary>
+            Reduce an user expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.UserExpression.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="T:Afk.Expression.UserExpressionEventHandler">
+            <summary>
+            Represent the delegate of <see cref="T:Afk.Expression.UserExpressionEventArgs"/>
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.UserExpressionEventArgs">
+            <summary>
+            Represents the event for user expression
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UserExpressionEventArgs.#ctor(System.String,System.Guid)">
+            <summary>
+            Initialize a new isntance of <see cref="T:Afk.Expression.UserExpressionEventArgs"/>
+            </summary>
+            <param name="name"></param>
+            <param name="correlationId"></param>
+        </member>
+        <member name="P:Afk.Expression.UserExpressionEventArgs.Name">
+            <summary>
+            Gets the name of events
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UserExpressionEventArgs.CorrelationId">
+            <summary>
+            Gets the correlation id
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UserExpressionEventArgs.Result">
+            <summary>
+            Gets the result of user expression
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.UserFunctionEventHandler">
+            <summary>
+            Represent the delegate of <see cref="T:Afk.Expression.UserFunctionEventArgs"/>
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.UserFunctionEventArgs">
+            <summary>
+            Represents the event for user functions
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UserFunctionEventArgs.#ctor(System.String,System.Object[],System.Guid)">
+            <summary>
+            Initialize a new isntance of <see cref="T:Afk.Expression.UserExpressionEventArgs"/>
+            </summary>
+            <param name="name"></param>
+            <param name="parameters"></param>
+            <param name="correlationId"></param>
+        </member>
+        <member name="P:Afk.Expression.UserFunctionEventArgs.Name">
+            <summary>
+            Gets the name of events
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UserFunctionEventArgs.CorrelationId">
+            <summary>
+            Gets the correlationId
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UserFunctionEventArgs.Parameters">
+            <summary>
+            Gets the parameters of event
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UserFunctionEventArgs.Result">
+            <summary>
+            Gets the result of user expression
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.BinaryVisitor">
+            <summary>
+            Represents a binary node visitor
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.BinaryVisitor.#ctor(Afk.Expression.BinaryNode)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.BinaryNode"/>
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:Afk.Expression.BinaryVisitor.Method">
+            <summary>
+            Gets the binary method
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryVisitor.Left">
+            <summary>
+            Gets the binary left operand
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.BinaryVisitor.Right">
+            <summary>
+            Gets the binary right operand
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.ExpressionEvalVisitor">
+            <summary>
+            Represents a visitor of <see cref="T:Afk.Expression.ExpressionEval"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.#ctor">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.ExpressionEvalVisitor"/>
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.Visit(Afk.Expression.ExpressionEval)">
+            <summary>
+            Visits a <see cref="T:Afk.Expression.ExpressionEval"/>
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.Visit(System.Object)">
+            <summary>
+            Visits a node 
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.VisitBinaryExpression(Afk.Expression.BinaryVisitor)">
+            <summary>
+            Visits a binary node
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.VisitUnaryExpression(Afk.Expression.UnaryVisitor)">
+            <summary>
+            Visits an unary node
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.VisitUserExpression(Afk.Expression.UserVisitor)">
+            <summary>
+            Visits an user expression
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.VisitFuncExpression">
+            <summary>
+            Visits an user function
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.ExpressionEvalVisitor.VisitArrayExpression">
+            <summary>
+            Visits an array
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.UnaryVisitor">
+            <summary>
+            Represents an unary node visitor
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UnaryVisitor.#ctor(Afk.Expression.UnaryNode)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.UnaryVisitor"/>
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:Afk.Expression.UnaryVisitor.Method">
+            <summary>
+            Gets the unary method
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.UnaryVisitor.Operand">
+            <summary>
+            Gets the unary operand
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.UserVisitor">
+            <summary>
+            Represents an user expression visitor
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.UserVisitor.#ctor(Afk.Expression.UserExpression)">
+            <summary>
+            Initialize a new instance of <see cref="T:Afk.Expression.UserVisitor"/>
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="P:Afk.Expression.UserVisitor.Expression">
+            <summary>
+            Gets the user expression
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,6 +1,6 @@
 # Expression
 **Afk.Expression** is an expression parser/evaluation. Expression is parse only once and use to evaluate differents inputs (variables, constants, functions).
-This library can be used to generate SQL Expression to be used with Entity Frmaework.
+This library can be used to generate SQL Expression to be used with Entity Framework.
 
 # Version
 The library is compatible with netstandard2.0
@@ -29,6 +29,16 @@ Console.WriteLine(eval.Evaluate());
 >>> true
 ```
 
+## Operators
+By default the ^ is the logical exclusive OR operator.
+You can change its behavior by using the operator type ***Arithmetic***
+
+```csharp
+ExpressionEval expr1 = new ExpressionEval("4^2", OperatorType.Arithmetic);
+Console.WriteLine(eval.Evaluate());
+>>> 16
+```
+ 
 ## Variables
 Expression allows you to use variables evaluated on execution
 ```csharp

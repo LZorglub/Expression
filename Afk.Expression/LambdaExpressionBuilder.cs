@@ -25,7 +25,7 @@ namespace Afk.Expression
             { typeof(ulong), new List<Type>(){ typeof(float), typeof(double), typeof(decimal) } },
         };
 
-        private ILambdaExpressionProvider lambdaExpressionProvider;
+        private readonly ILambdaExpressionProvider lambdaExpressionProvider;
 
         /// <summary>
         /// Initialize a new instance of <see cref="LambdaExpressionBuilder"/>
@@ -70,13 +70,12 @@ namespace Afk.Expression
             {
                 result = this.lambdaExpressionProvider.GetExpression(parameter, ((UserExpression)o).Expression);
             }
-            else if (o is UnaryNode)
+            else if (o is UnaryNode unaryNode)
             {
                 #region UnaryNode
-                UnaryNode node = (UnaryNode)o;
-                System.Linq.Expressions.Expression e1 = BuildLambda(node.Operand, parameter);
+                System.Linq.Expressions.Expression e1 = BuildLambda(unaryNode.Operand, parameter);
 
-                switch (node.Op.Op)
+                switch (unaryNode.Op.Op)
                 {
                     case "+":
                         result = e1;
@@ -93,18 +92,17 @@ namespace Afk.Expression
                 }
                 #endregion
             }
-            else if (o is BinaryNode)
+            else if (o is BinaryNode binaryNode)
             {
                 #region BinaryNode
-                BinaryNode node = (BinaryNode)o;
-                System.Linq.Expressions.Expression e1 = BuildLambda(node.Operand1, parameter);
-                System.Linq.Expressions.Expression e2 = BuildLambda(node.Operand2, parameter);
+                System.Linq.Expressions.Expression e1 = BuildLambda(binaryNode.Operand1, parameter);
+                System.Linq.Expressions.Expression e2 = BuildLambda(binaryNode.Operand2, parameter);
 
-                result = this.lambdaExpressionProvider.GetExpression(e1, node.Op.Op.ToLower(), e2);
+                result = this.lambdaExpressionProvider.GetExpression(e1, binaryNode.Op.Op.ToLower(), e2);
 
                 if (result == null)
                 {
-                    switch (node.Op.Op.ToLower())
+                    switch (binaryNode.Op.Op.ToLower())
                     {
                         case "*":
                             result = System.Linq.Expressions.Expression.Multiply(e1, e2);

@@ -36,13 +36,13 @@ namespace Afk.Expression
         // space, tabs, new line, form feed, carriage return
         private const string c_strWhiteSpace = @"\s+";
 
-        private static readonly string stringNoCapture = 
+        private const string stringNoCapture = 
             @"('[^']*(?:'{2}[^']*)*')+";
 
         // Un jeu de parenthese est composé d'une parenthèse ouvrante et se termine
         // à la n-ième parenthese fermante correspondant au n ouvrante. Les parenthéses
         // située dans les chaines de caractères ne sont pas comptabilisées.
-        private static readonly string c_strParenthesis =
+        private const string c_strParenthesis =
             @"\G\((?<Parenthesis>" +
             @"(?>" + stringNoCapture + @"|[^()]|\((?<number>)|\)(?<-number>))*" +
             @"(?(number)(?!))" +
@@ -57,7 +57,7 @@ namespace Afk.Expression
         // Un tableau est composé d'un crochet ouvrant et se termine
         // au n-ième crochet fermant correspondant au n ouvrant. Les crochets
         // située dans les chaines de caractères ne sont pas comptabilisées.
-        private static readonly string c_strBrackets =
+        private const string c_strBrackets =
             @"\G\[(?<Bracket>" +
             @"(?>" + stringNoCapture + @"|[^\[\]]|\[(?<number>)|\](?<-number>))*" +
             @"(?(number)(?!))" +

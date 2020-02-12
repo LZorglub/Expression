@@ -12,9 +12,10 @@ namespace Afk.Expression
     /// </summary>
     public class ExpressionEval : IExpression
     {
-        private CaseSensitivity caseSensitivity;
+        private readonly CaseSensitivity caseSensitivity;
+        private readonly OperatorType operatorType;
 
-        private ExpressionArguments arguments;
+        private readonly ExpressionArguments arguments;
         private object bTree;
 
         /// <summary>
@@ -39,6 +40,18 @@ namespace Afk.Expression
             this.arguments.PropertyChanged += OnArgumentChanged;
 
             this.caseSensitivity = caseSensitivity;
+            this.operatorType = OperatorType.Binary;
+        }
+
+        /// <summary>
+        /// Initialize a new instance of <see cref="ExpressionEval"/>
+        /// </summary>
+        /// <param name="expression">Expression to evaluate</param>
+        /// <param name="operatorType">Operator type</param>
+        /// <param name="caseSensitivity">Case sensitivity</param>
+        public ExpressionEval(string expression, OperatorType operatorType, CaseSensitivity caseSensitivity = CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction) : this(expression, caseSensitivity)
+        {
+            this.operatorType = operatorType;
         }
 
         /// <summary>
@@ -118,7 +131,7 @@ namespace Afk.Expression
 
             if (tempTree == null)
             {
-				ExpressionParser parser = new ExpressionParser(this.Expression, this.arguments, this.caseSensitivity);
+				ExpressionParser parser = new ExpressionParser(this.Expression, this.arguments, this.caseSensitivity, this.operatorType);
 
                 parser.UserExpressionEventHandler += OnUserExpressionEvaluated;
                 parser.UserFunctionEventHandler += OnUserFunctionEvaluated;
@@ -184,8 +197,7 @@ namespace Afk.Expression
         /// <param name="e"></param>
         private void OnUserExpressionEvaluated(object sender, UserExpressionEventArgs e)
         {
-            if (this.UserExpressionEventHandler != null)
-                this.UserExpressionEventHandler(this, e);
+            this.UserExpressionEventHandler?.Invoke(this, e);
         }
 
         /// <summary>
@@ -195,8 +207,7 @@ namespace Afk.Expression
         /// <param name="e"></param>
         private void OnUserFunctionEvaluated(object sender, UserFunctionEventArgs e)
         {
-            if (this.UserFunctionEventHandler != null)
-                this.UserFunctionEventHandler(this, e);
+            this.UserFunctionEventHandler?.Invoke(this, e);
         }
 
         /// <summary>

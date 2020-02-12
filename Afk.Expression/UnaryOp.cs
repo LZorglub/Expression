@@ -12,7 +12,7 @@ namespace Afk.Expression
     /// </summary>
     struct UnaryOp
     {
-        private string op;
+        private readonly string op;
 
         /// <summary>
         /// Gets the unary operator
@@ -36,8 +36,7 @@ namespace Afk.Expression
         /// <returns></returns>
         public object Do(object v, Guid correlationId)
         {
-            IExpression tempv = v as IExpression;
-            if (tempv != null)
+            if (v is IExpression tempv)
                 v = tempv.Evaluate(correlationId);
 
             switch (Op)

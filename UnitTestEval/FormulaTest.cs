@@ -5,7 +5,7 @@ using Afk.Expression;
 namespace UnitTestEval
 {
     [TestClass]
-    public class UnitTest1
+    public class FormulaTest
     {
         [TestMethod]
         public void TestSimpleFormula()
@@ -15,10 +15,24 @@ namespace UnitTestEval
         }
 
         [TestMethod]
+        public void TestDoubleValue()
+        {
+            ExpressionEval eval = new ExpressionEval("5.8");
+            Assert.AreEqual(eval.Evaluate(), 5.8d);
+        }
+
+        [TestMethod]
         public void TestSimpleStringFormula()
         {
             ExpressionEval eval = new ExpressionEval("'one ' + 'and' + ' two'");
             Assert.AreEqual(eval.Evaluate(), "one and two");
+        }
+
+        [TestMethod]
+        public void TestPowerFormula()
+        {
+            ExpressionEval eval = new ExpressionEval("5E2");
+            Assert.AreEqual(500d, eval.Evaluate());
         }
 
         [TestMethod]
@@ -119,6 +133,16 @@ namespace UnitTestEval
             var result = eval.Evaluate();
 
             Assert.AreEqual(result, "quand la caravane PASSE les chiens aboient.");
+        }
+
+        [TestMethod]
+        public void TestOperatorType()
+        {
+            ExpressionEval expr1 = new ExpressionEval("4^2", OperatorType.Arithmetic);
+            Assert.AreEqual(16d, expr1.Evaluate());
+
+            ExpressionEval expr2 = new ExpressionEval("8^2", OperatorType.Binary);
+            Assert.AreEqual((ulong)10, expr2.Evaluate());
         }
 
         [TestMethod]

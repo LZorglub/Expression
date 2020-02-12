@@ -14,9 +14,9 @@ namespace Afk.Expression
     /// </summary>
     public class ExpressionParser : IExpression
     {
-        private CaseSensitivity caseSensitivity;
-
-        private ExpressionArguments arguments;
+        private readonly CaseSensitivity caseSensitivity;
+        private readonly OperatorType operatorType;
+        private readonly ExpressionArguments arguments;
 
         private Regex regUserExpression;
         private Regex regUserFunction;
@@ -35,20 +35,21 @@ namespace Afk.Expression
         /// <summary>
         /// Initialize a new instance of <see cref="ExpressionParser"/>
         /// </summary>
-        public ExpressionParser(string expression) : this(expression, new ExpressionArguments(CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction), CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction)
+        public ExpressionParser(string expression) : this(expression, new ExpressionArguments(CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction), CaseSensitivity.UserConstants & CaseSensitivity.UserExpression & CaseSensitivity.String & CaseSensitivity.UserFunction, OperatorType.Binary)
         {
         }
 
         /// <summary>
         /// Initialize a new instance of <see cref="ExpressionParser"/>
         /// </summary>
-        internal ExpressionParser(string expression, ExpressionArguments arguments, CaseSensitivity caseSensitivity)
+        internal ExpressionParser(string expression, ExpressionArguments arguments, CaseSensitivity caseSensitivity, OperatorType operatorType)
         {
             this.Expression = expression;
             this.arguments = arguments;
             this.arguments.PropertyChanged += OnArgumentChanged;
 
             this.caseSensitivity = caseSensitivity;
+            this.operatorType = operatorType;
         }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace Afk.Expression
         /// <returns></returns>
         private object BuildTree(Guid correlationId)
         {
-            Match mRet = null;
+            Match mRet;
             int nIdx = 0;
             object val = null; // Node currently analysis
             object root = null; // Root node (bTree)
@@ -199,7 +200,7 @@ namespace Afk.Expression
                     if (m.Success)
                     {
                         mRet = m;
-                        ExpressionParser expr = new ExpressionParser(m.Groups["Parenthesis"].Value, this.arguments, this.caseSensitivity);
+                        ExpressionParser expr = new ExpressionParser(m.Groups["Parenthesis"].Value, this.arguments, this.caseSensitivity, this.operatorType);
                         if (this.UserExpressionEventHandler != null)
                         {
                             expr.UserExpressionEventHandler += this.UserExpressionEventHandler;
@@ -230,7 +231,7 @@ namespace Afk.Expression
                     if (m.Success)
                     {
                         mRet = m;
-                        ArrayExpression expr = new ArrayExpression(m.Groups["Bracket"].Value, this.arguments, this.caseSensitivity);
+                        ArrayExpression expr = new ArrayExpression(m.Groups["Bracket"].Value, this.arguments, this.caseSensitivity, this.operatorType);
 
                         if (this.UserExpressionEventHandler != null)
                         {
@@ -298,7 +299,7 @@ namespace Afk.Expression
                     m = DefinedRegex.Numeric.Match(Expression, nIdx);
                     if (m.Success && (mRet == null || m.Index < mRet.Index))
                     {
-                        while (m.Success && ("" + m.Value == ""))
+                        while (m.Success && (string.IsNullOrEmpty("" + m.Value)))
                             m = m.NextMatch();
                         if (m.Success)
                         {
@@ -324,7 +325,7 @@ namespace Afk.Expression
                     m = DefinedRegex.BinaryOp.Match(Expression, nIdx);
                     if (m.Success && (mRet == null || m.Index < mRet.Index))
                     {
-                        mRet = m; val = new BinaryOp(m.Value);
+                        mRet = m; val = new BinaryOp(m.Value, this.operatorType);
                     }
                 }
 
@@ -377,7 +378,7 @@ namespace Afk.Expression
                             // Function name
                             string functionName = m.Groups["Function"].Value;
                             #region Function parameters
-                            ArrayExpression expr = new ArrayExpression(m.Groups["Parenthesis"].Value, this.arguments, this.caseSensitivity);
+                            ArrayExpression expr = new ArrayExpression(m.Groups["Parenthesis"].Value, this.arguments, this.caseSensitivity, this.operatorType);
 
                             if (this.UserExpressionEventHandler != null)
                             {
@@ -434,29 +435,32 @@ namespace Afk.Expression
                         throw new Exception();
                     }
                     // Si root is BinaryNode il faut respecter les priorités des opérateurs
-                    if (root is BinaryNode && !((BinaryNode)root).IsEntity && ((BinaryNode)root).Op.Priority > ((BinaryOp)val).Priority)
+                    if (root is BinaryNode treeNode && !((BinaryNode)root).IsEntity && ((BinaryNode)root).Op.Priority > ((BinaryOp)val).Priority)
                     {
                         // Exemple : 1 + 3 * 4
-                        BinaryNode treeNode = root as BinaryNode;
                         while (treeNode.Operand2 is BinaryNode &&
                             !((BinaryNode)treeNode.Operand2).IsEntity &&
                             ((BinaryNode)treeNode.Operand2).Op.Priority > ((BinaryOp)val).Priority)
                             treeNode = treeNode.Operand2 as BinaryNode;
 
                         // Priorité élevé ==> opérateur plus faible
-                        BinaryNode node = new BinaryNode();
-                        node.Op = val as BinaryOp;
-                        node.Operand1 = treeNode.Operand2;
-                        node.CaseSensitivity = this.caseSensitivity;
+                        BinaryNode node = new BinaryNode {
+                            Op = val as BinaryOp,
+                            Operand1 = treeNode.Operand2,
+                            CaseSensitivity = this.caseSensitivity
+                        };
                         treeNode.Operand2 = node;
                         //						node.obj1 = ((BinaryNode)root).obj2;
                         //						((BinaryNode)root).obj2 = node;
                     }
                     else
                     {
-                        BinaryNode node = new BinaryNode();
-                        node.Op = val as BinaryOp; node.Operand1 = root;
-                        node.CaseSensitivity = this.caseSensitivity;
+                        BinaryNode node = new BinaryNode
+                        {
+                            Op = val as BinaryOp,
+                            Operand1 = root,
+                            CaseSensitivity = this.caseSensitivity
+                        };
                         root = node;
                     }
                 }
@@ -540,7 +544,7 @@ namespace Afk.Expression
 
             List<string> userExpressions = new List<string>();
 
-            Match mRet = null;
+            Match mRet;
             int nIdx = 0;
 
             string currentExpression = expression;
@@ -638,7 +642,7 @@ namespace Afk.Expression
                     m = DefinedRegex.Numeric.Match(expression, nIdx);
                     if (m.Success && (mRet == null || m.Index < mRet.Index))
                     {
-                        while (m.Success && ("" + m.Value == ""))
+                        while (m.Success && (string.IsNullOrEmpty("" + m.Value)))
                             m = m.NextMatch();
                         if (m.Success)
                         {

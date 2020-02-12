@@ -14,6 +14,11 @@ namespace Afk.Expression
     internal class BinaryOp
     {
         /// <summary>
+        /// Gets the operator type
+        /// </summary>
+        public OperatorType OperatorType { get; }
+
+        /// <summary>
         /// Gets the binary operator
         /// </summary>
         public string Op { get; private set; }
@@ -27,8 +32,10 @@ namespace Afk.Expression
         /// Initialize a new instance of <see cref="BinaryOp"/>
         /// </summary>
         /// <param name="op"></param>
-        public BinaryOp(string op)
+        /// <param name="operatorType">Operator type : bianry or arithmetic</param>
+        public BinaryOp(string op, OperatorType operatorType)
         {
+            this.OperatorType = operatorType;
             this.Op = op; Priority = BinaryOpPriority.GetPriority(op);
         }
 
@@ -42,8 +49,7 @@ namespace Afk.Expression
         /// <returns></returns>
         public object DoBinaryOp(object v1, object v2, CaseSensitivity caseSensitivity, Guid correlationId)
         {
-            IExpression tv = v1 as IExpression;
-            if (tv != null)
+            if (v1 is IExpression tv)
                 v1 = tv.Evaluate(correlationId);
 
             if (v1 is System.Collections.ICollection)
@@ -114,8 +120,7 @@ namespace Afk.Expression
         /// <returns></returns>
         private object DoBinarySimpleOp(object v1, object v2, CaseSensitivity caseSensitivity, Guid correlationId)
         {
-            IExpression tv = v1 as IExpression;
-            if (tv != null)
+            if (v1 is IExpression tv)
                 v1 = tv.Evaluate(correlationId);
 
             // La deuxieme opérande est évalué suivant l'opérateur (les opérateurs
@@ -177,8 +182,15 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
-                    return (Convert.ToUInt64(v1, CultureInfo.InvariantCulture) ^
-                              Convert.ToUInt64(v2, CultureInfo.InvariantCulture));
+                    if (this.OperatorType == OperatorType.Arithmetic)
+                    {
+                        return DoSpecialOperator(v1, v2, caseSensitivity);
+                    }
+                    else
+                    {
+                        return (Convert.ToUInt64(v1, CultureInfo.InvariantCulture) ^
+                                  Convert.ToUInt64(v2, CultureInfo.InvariantCulture));
+                    }
                 case "|":
                     tv = v2 as IExpression;
                     if (tv != null)
@@ -225,13 +237,13 @@ namespace Afk.Expression
             // If operand are string, concat the string
             if (v1 is string || v2 is string)
             {
-                string str1 = (v1 != null) ? v1.ToString() : null;
-                string str2 = (v2 != null) ? v2.ToString() : null;
+                string str1 = v1?.ToString();
+                string str2 = v2?.ToString();
                 string stru1, stru2;
                 if ((caseSensitivity & CaseSensitivity.String) == CaseSensitivity.None)
                 {
-                    stru1 = (str1 != null) ? str1.ToUpper() : null;
-                    stru2 = (str2 != null) ? str2.ToUpper() : null;
+                    stru1 = str1?.ToUpper();
+                    stru2 = str2?.ToUpper();
                 }
                 else
                 {
@@ -292,6 +304,7 @@ namespace Afk.Expression
                 case "=": return f1 == f2;
                 case "<>":
                 case "!=": return f1 != f2;
+                case "^": return Math.Pow(f1, f2);
             }
 
             throw new ArgumentException("Operator '" + this.Op + "' not specified.");
