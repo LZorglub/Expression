@@ -32,6 +32,14 @@ namespace UnitTestEval
         }
 
         [TestMethod]
+        public void TestOperatorTypePowerPriority()
+        {
+            ExpressionEval expr1 = new ExpressionEval("0.0000001504*222916^2+0.0281*222916+2752.28", OperatorType.Arithmetic);
+            var result = Math.Round((double)expr1.Evaluate(), 0, MidpointRounding.AwayFromZero);
+            Assert.AreEqual(16490d, result);
+        }
+
+        [TestMethod]
         public void TestConstantWithPower()
         {
             ExpressionEval eval = new ExpressionEval("deux3", CaseSensitivity.None);

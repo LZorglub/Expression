@@ -36,7 +36,7 @@ namespace Afk.Expression
         public BinaryOp(string op, OperatorType operatorType)
         {
             this.OperatorType = operatorType;
-            this.Op = op; Priority = BinaryOpPriority.GetPriority(op);
+            this.Op = op; Priority = BinaryOpPriority.GetPriority(op, operatorType);
         }
 
         /// <summary>

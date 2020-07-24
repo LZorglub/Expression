@@ -183,11 +183,12 @@
             Provides priority on operator
             </summary>
         </member>
-        <member name="M:Afk.Expression.BinaryOpPriority.GetPriority(System.String)">
+        <member name="M:Afk.Expression.BinaryOpPriority.GetPriority(System.String,Afk.Expression.OperatorType)">
             <summary>
             Gets the priority of an operator
             </summary>
             <param name="op">Operator</param>
+            <param name="operatorType">Operator type t evaluate formula</param>
             <returns>Entier représentant le degré de priorité d'une opération binaire.
             Une valeur elevée représente un degré de priorité bas, la valeur 0 est la priorité
             maximale accordée à une opération.

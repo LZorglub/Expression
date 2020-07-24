@@ -15,11 +15,12 @@ namespace Afk.Expression
         /// Gets the priority of an operator
         /// </summary>
         /// <param name="op">Operator</param>
+        /// <param name="operatorType">Operator type t evaluate formula</param>
         /// <returns>Entier représentant le degré de priorité d'une opération binaire.
         /// Une valeur elevée représente un degré de priorité bas, la valeur 0 est la priorité
         /// maximale accordée à une opération.
         /// </returns>
-        public static int GetPriority(string op)
+        public static int GetPriority(string op, OperatorType operatorType)
         {
             switch (op.ToLower())
             {
@@ -40,7 +41,14 @@ namespace Afk.Expression
                 case "<>":
                 case "!=": return 4;
                 case "&": return 5;
-                case "^": return 6;
+                case "^":
+                    {
+                        // Lorsque ^ est utilisé en tant que Power sa priorité est la même que les opérateurs de plus haute priorité
+                        if (operatorType == OperatorType.Arithmetic)
+                            return -1;
+                        else
+                            return 6;
+                    }
                 case "|": return 7;
                 case "and":
                 case "&&": return 8;
