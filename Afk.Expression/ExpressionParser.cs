@@ -535,9 +535,10 @@ namespace Afk.Expression
         /// <summary>
         /// Extract user expression from expression
         /// </summary>
-        /// <param name="expression"></param>
+        /// <param name="expression">Expression to analyze</param>
+        /// <param name="types">Types of user expression to retrieve</param>
         /// <returns></returns>
-        public static IEnumerable<string> Extract(string expression)
+        public static IEnumerable<string> Extract(string expression, UserExpressionTypes types = UserExpressionTypes.Function | UserExpressionTypes.Variable)
         {
             Regex regUserFunction = new Regex(@"(?<Function>\w+)\s*" + DefinedRegex.FunctionParameters, RegexOptions.Compiled);
             Regex regUserExpression = new Regex(@"(?<Expression>[\w,\.]+)");
@@ -581,7 +582,7 @@ namespace Afk.Expression
                     if (m.Success)
                     {
                         mRet = m;
-                        userExpressions.AddRange(Extract(m.Groups["Parenthesis"].Value));
+                        userExpressions.AddRange(Extract(m.Groups["Parenthesis"].Value, types));
                     }
                 }
 
@@ -592,7 +593,7 @@ namespace Afk.Expression
                     if (m.Success)
                     {
                         mRet = m;
-                        userExpressions.AddRange(ArrayExpression.Extract(m.Groups["Bracket"].Value));
+                        userExpressions.AddRange(ArrayExpression.Extract(m.Groups["Bracket"].Value, types));
                     }
                 }
 
@@ -682,8 +683,8 @@ namespace Afk.Expression
                             mRet = m;
                             // Function name
                             string functionName = m.Groups["Function"].Value;
-                            userExpressions.Add(functionName);
-                            userExpressions.AddRange(ArrayExpression.Extract(m.Groups["Parenthesis"].Value));
+                            if ((types & UserExpressionTypes.Function) == UserExpressionTypes.Function) userExpressions.Add(functionName);
+                            userExpressions.AddRange(ArrayExpression.Extract(m.Groups["Parenthesis"].Value, types));
                         }
                     }
                 }
@@ -694,7 +695,7 @@ namespace Afk.Expression
                     m = regUserExpression.Match(expression, nIdx);
                     if (m.Success && (mRet == null || m.Index < mRet.Index))
                     {
-                        userExpressions.Add(m.Value);
+                        if ((types & UserExpressionTypes.Variable) == UserExpressionTypes.Variable)  userExpressions.Add(m.Value);
                         mRet = m; 
                     }
                 }

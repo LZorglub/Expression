@@ -73,11 +73,12 @@
             </summary>
             <returns>A string that represents the current object.</returns>
         </member>
-        <member name="M:Afk.Expression.ArrayExpression.Extract(System.String)">
+        <member name="M:Afk.Expression.ArrayExpression.Extract(System.String,Afk.Expression.UserExpressionTypes)">
             <summary>
             Extract expression from list of parameters
             </summary>
-            <param name="expression"></param>
+            <param name="expression">Expression to analyze</param>
+            <param name="types">User expression to retrieve</param>
             <returns></returns>
         </member>
         <member name="P:Afk.Expression.BinaryNode.IsEntity">
@@ -407,11 +408,12 @@
             </summary>
             <returns>A string that represents the current object.</returns>
         </member>
-        <member name="M:Afk.Expression.ExpressionEval.Extract(System.String)">
+        <member name="M:Afk.Expression.ExpressionEval.Extract(System.String,Afk.Expression.UserExpressionTypes)">
             <summary>
             Extracts user expression from expression
             </summary>
-            <param name="expression"></param>
+            <param name="expression">Expression to analyze</param>
+            <param name="types">Types of user expression to extract</param>
             <returns></returns>
         </member>
         <member name="T:Afk.Expression.ExpressionException">
@@ -524,11 +526,12 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Afk.Expression.ExpressionParser.Extract(System.String)">
+        <member name="M:Afk.Expression.ExpressionParser.Extract(System.String,Afk.Expression.UserExpressionTypes)">
             <summary>
             Extract user expression from expression
             </summary>
-            <param name="expression"></param>
+            <param name="expression">Expression to analyze</param>
+            <param name="types">Types of user expression to retrieve</param>
             <returns></returns>
         </member>
         <member name="T:Afk.Expression.FunctionExpression">
@@ -847,6 +850,22 @@
         <member name="P:Afk.Expression.UserExpressionEventArgs.Result">
             <summary>
             Gets the result of user expression
+            </summary>
+        </member>
+        <member name="T:Afk.Expression.UserExpressionTypes">
+            <summary>
+            Represents type of use expressions
+            </summary>
+            <remarks>Used to extract variables and functions in <see cref="T:Afk.Expression.ExpressionParser"/> extract method</remarks>
+        </member>
+        <member name="F:Afk.Expression.UserExpressionTypes.Variable">
+            <summary>
+            Represent an user variable
+            </summary>
+        </member>
+        <member name="F:Afk.Expression.UserExpressionTypes.Function">
+            <summary>
+            Represent an user function
             </summary>
         </member>
         <member name="T:Afk.Expression.UserFunctionEventHandler">

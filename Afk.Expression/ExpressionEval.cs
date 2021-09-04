@@ -242,11 +242,12 @@ namespace Afk.Expression
         /// <summary>
         /// Extracts user expression from expression
         /// </summary>
-        /// <param name="expression"></param>
+        /// <param name="expression">Expression to analyze</param>
+        /// <param name="types">Types of user expression to extract</param>
         /// <returns></returns>
-        public static IEnumerable<string> Extract(string expression)
+        public static IEnumerable<string> Extract(string expression, UserExpressionTypes types = UserExpressionTypes.Function | UserExpressionTypes.Variable)
         {
-            return ExpressionParser.Extract(expression);
+            return ExpressionParser.Extract(expression, types);
         }
     }
 }

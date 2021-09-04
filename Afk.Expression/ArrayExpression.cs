@@ -172,9 +172,10 @@ namespace Afk.Expression
         /// <summary>
         /// Extract expression from list of parameters
         /// </summary>
-        /// <param name="expression"></param>
+        /// <param name="expression">Expression to analyze</param>
+        /// <param name="types">User expression to retrieve</param>
         /// <returns></returns>
-        public static IEnumerable<string> Extract(string expression)
+        public static IEnumerable<string> Extract(string expression, UserExpressionTypes types)
         {
             List<string> userExpressions = new List<string>();
 
@@ -208,11 +209,11 @@ namespace Afk.Expression
 
                     if (!bInQuotes && nBrackets == 0 && nParenthesis == 0 && expr[nIdx] == ',')
                     {
-                        userExpressions.AddRange(ExpressionParser.Extract(expr.Substring(nLast, nIdx - nLast)));
+                        userExpressions.AddRange(ExpressionParser.Extract(expr.Substring(nLast, nIdx - nLast), types));
                         nLast = nIdx + 1;
                     }
                 }
-                userExpressions.AddRange(ExpressionParser.Extract(expr.Substring(nLast, nIdx - nLast)));
+                userExpressions.AddRange(ExpressionParser.Extract(expr.Substring(nLast, nIdx - nLast), types));
             }
             catch (ExpressionException e)
             {

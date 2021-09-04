@@ -52,5 +52,23 @@ namespace UnitTestEval
             Assert.AreEqual("result.value", userExpressions.ElementAt(4));
         }
 
+        [TestMethod]
+        public void ExtractOnlyVariablesMustReturnVariables()
+        {
+            IEnumerable<string> userExpressions = ExpressionEval.Extract("fn(a, (b), c)", UserExpressionTypes.Variable);
+            Assert.AreEqual(3, userExpressions.Count());
+            Assert.AreEqual("a", userExpressions.ElementAt(0));
+            Assert.AreEqual("b", userExpressions.ElementAt(1));
+            Assert.AreEqual("c", userExpressions.ElementAt(2));
+        }
+
+        [TestMethod]
+        public void ExtractOnlyFunctionsMustReturnFunctions()
+        {
+            IEnumerable<string> userExpressions = ExpressionEval.Extract("fn(a, (b), c)", UserExpressionTypes.Function);
+            Assert.AreEqual(1, userExpressions.Count());
+            Assert.AreEqual("fn", userExpressions.ElementAt(0));
+        }
+
     }
 }

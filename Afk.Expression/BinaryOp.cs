@@ -131,30 +131,35 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     return (Convert.ToDouble(v1, CultureInfo.InvariantCulture) *
                               Convert.ToDouble(v2, CultureInfo.InvariantCulture));
                 case "/":
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     return (Convert.ToDouble(v1, CultureInfo.InvariantCulture) /
                               Convert.ToDouble(v2, CultureInfo.InvariantCulture));
                 case "%":
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     return (Convert.ToInt64(v1, CultureInfo.InvariantCulture) %
                               Convert.ToInt64(v2, CultureInfo.InvariantCulture));
                 case "<<":
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     return (Convert.ToInt64(v1, CultureInfo.InvariantCulture) <<
                                Convert.ToInt32(v2, CultureInfo.InvariantCulture));
                 case ">>":
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     return (Convert.ToInt64(v1, CultureInfo.InvariantCulture) >>
                                Convert.ToInt32(v2, CultureInfo.InvariantCulture));
                 case "+":
@@ -176,12 +181,14 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     return (Convert.ToUInt64(v1, CultureInfo.InvariantCulture) &
                               Convert.ToUInt64(v2, CultureInfo.InvariantCulture));
                 case "^":
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     if (this.OperatorType == OperatorType.Arithmetic)
                     {
                         return DoSpecialOperator(v1, v2, caseSensitivity);
@@ -195,6 +202,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null) return null;
                     return (Convert.ToUInt64(v1, CultureInfo.InvariantCulture) |
                               Convert.ToUInt64(v2, CultureInfo.InvariantCulture));
                 case "and":
@@ -234,8 +242,27 @@ namespace Afk.Expression
         /// <returns></returns>
         private object DoSpecialOperator(object v1, object v2, CaseSensitivity caseSensitivity)
         {
+            if (v1 is null && v2 is null)
+            {
+                // If operands are null do special op
+                switch (this.Op.ToLower())
+                {
+                    case "+": 
+                    case "-": return null;
+                    case "<":
+                    case ">":
+                    case "<>":
+                    case "!=":
+                        return false;
+                    case "<=": 
+                    case ">=": 
+                    case "like":
+                    case "==":
+                    case "=": return true;
+                }
+            }
             // If operand are string, concat the string
-            if (v1 is string || v2 is string)
+            else if (v1 is string || v2 is string)
             {
                 string str1 = v1?.ToString();
                 string str2 = v2?.ToString();
@@ -285,6 +312,23 @@ namespace Afk.Expression
                     case "=": return d1 == d2;
                     case "<>":
                     case "!=": return d1 != d2;
+                }
+            } else if (v1 is null || v2 is null) {
+                // One operand is null, another must match a double
+                switch (this.Op.ToLower())
+                {
+                    case "+": return null;
+                    case "-": return null;
+                    case "<": return false;
+                    case "<=": return false;
+                    case ">": return false;
+                    case ">=": return false;
+                    case "like":
+                    case "==":
+                    case "=": return false;
+                    case "<>":
+                    case "!=": return true;
+                    case "^": return null;
                 }
             }
 
