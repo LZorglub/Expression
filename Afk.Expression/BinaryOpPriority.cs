@@ -36,6 +36,7 @@ namespace Afk.Expression
                 case ">":
                 case ">=": return 3;
                 case "like":
+                case "in":
                 case "==":
                 case "=":
                 case "<>":

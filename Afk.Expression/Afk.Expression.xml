@@ -1019,5 +1019,79 @@
             Gets the user expression
             </summary>
         </member>
+        <member name="T:Afk.Expression.WellKnowFunctionsExpression">
+            <summary>
+            Represents common functions (case, upper, lower...)
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.#ctor(System.String,System.Object[])">
+            <summary>
+            Initialize a new isntance of <see cref="T:Afk.Expression.WellKnowFunctionsExpression"/>
+            </summary>
+            <param name="expression"></param>
+            <param name="parameters"></param>
+        </member>
+        <member name="P:Afk.Expression.WellKnowFunctionsExpression.Expression">
+            <summary>
+            Gets the expression of <see cref="T:Afk.Expression.WellKnowFunctionsExpression"/>
+            </summary>
+        </member>
+        <member name="P:Afk.Expression.WellKnowFunctionsExpression.Parameters">
+            <summary>
+            Gets the function parameters
+            </summary>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.Evaluate">
+            <summary>
+            Evaluate the user expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.Evaluate(System.Guid)">
+            <summary>
+            Evaluate the user expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.Reduce">
+            <summary>
+            Reduces the function expression
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.EvaluateParameters(System.Guid)">
+            <summary>
+            Evaluates the function parameters
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.EvaluateObject(System.Object,System.Guid)">
+            <summary>
+            Evaluates a object
+            </summary>
+            <param name="node"></param>
+            <param name="correlationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.ToPolishString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.PerformCase(System.Object[])">
+            <summary>
+            Perform case operator
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Afk.Expression.WellKnowFunctionsExpression.PerformReplace(System.Object[])">
+            <summary>
+            Perform replace operator
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

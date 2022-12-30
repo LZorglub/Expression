@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Afk.Expression;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace UnitTestEval
 {
@@ -157,6 +159,89 @@ namespace UnitTestEval
 
             Assert.AreEqual(lambda("test"), 12);
             Assert.AreEqual(lambda("12345678"), 16);
+        }
+
+        [TestMethod]
+        public void TestBuildLambaAdditionExpression()
+        {
+            ExpressionEval expr = new ExpressionEval("x + y");
+            expr.AddVariable("x");
+            expr.AddVariable("y");
+
+            var lambda = ExpressionHelper.BuildLambda<Dictionary<string,int>, int>(expr,
+                (e, name) => {
+                    MethodInfo mi = e.Type.GetMethod("get_Item");
+                    return System.Linq.Expressions.Expression.Call(e, mi, System.Linq.Expressions.Expression.Constant(name));
+                })
+                .Compile();
+
+            Assert.AreEqual(13, lambda(new Dictionary<string, int> { { "x", 5 }, { "y", 8 } }));
+            Assert.AreNotEqual(3, lambda(new Dictionary<string, int> { { "x", 1 }, { "y", 1 } }));
+            Assert.AreEqual(3, lambda(new Dictionary<string, int> { { "x", 1 }, { "y", 2 } }));
+        }
+
+        [TestMethod]
+        public void TestBuildLambaDoubleValue()
+        {
+            ExpressionEval expr = new ExpressionEval("x = 3");
+            expr.AddVariable("x");
+
+            var lambda = ExpressionHelper.BuildLambda<double, Boolean>(expr,
+                (e, name) =>
+                {
+                    return e;
+                })
+                .Compile();
+            Assert.AreEqual(true, lambda(3));
+            Assert.AreNotEqual(true, lambda(6));
+        }
+
+        [TestMethod]
+        public void TestBuildLambaInArrayExpression()
+        {
+            ExpressionEval expr = new ExpressionEval("x in [2,3,5,6, 3+6]");
+            expr.AddVariable("x");
+
+            var lambda = ExpressionHelper.BuildLambda<double, Boolean>(expr,
+                (e, name) =>
+                {
+                    return e;
+                })
+                .Compile();
+
+            Assert.AreEqual(true, lambda(3));
+            Assert.AreEqual(true, lambda(6));
+            Assert.AreEqual(false, lambda(8));
+            Assert.AreEqual(true, lambda(9));
+
+            expr = new ExpressionEval("(x + y) in [2, 4, 8]");
+            expr.AddVariable("x");
+            expr.AddVariable("y");
+
+            var lambdaXY = ExpressionHelper.BuildLambda<Dictionary<string, double>, bool>(expr,
+                (e, name) => {
+                    MethodInfo mi = e.Type.GetMethod("get_Item");
+                    return System.Linq.Expressions.Expression.Call(e, mi, System.Linq.Expressions.Expression.Constant(name));
+                })
+                .Compile();
+
+            Assert.AreEqual(true, lambdaXY(new Dictionary<string, double> { { "x", 5 }, { "y", 3 } }));
+
+            expr = new ExpressionEval("(x + y) in [2, 4, 8, z]");
+            expr.AddVariable("x");
+            expr.AddVariable("y");
+            expr.AddVariable("z");
+
+            var lambdaXYZ = ExpressionHelper.BuildLambda<Dictionary<string, double>, bool>(expr,
+                (e, name) => {
+                    MethodInfo mi = e.Type.GetMethod("get_Item");
+                    return System.Linq.Expressions.Expression.Call(e, mi, System.Linq.Expressions.Expression.Constant(name));
+                })
+                .Compile();
+
+            Assert.AreEqual(true, lambdaXYZ(new Dictionary<string, double> { { "x", 5 }, { "y", 3 }, { "z", 9 } }));
+            Assert.AreEqual(false, lambdaXYZ(new Dictionary<string, double> { { "x", 5 }, { "y", 5 }, { "z", 9 } }));
+            Assert.AreEqual(true, lambdaXYZ(new Dictionary<string, double> { { "x", 5 }, { "y", 4 }, { "z", 9 } }));
         }
 
         private void OnFunctionHandler(object sender, UserFunctionEventArgs e)

@@ -154,6 +154,20 @@ namespace Afk.Expression
                             throw new InvalidOperationException("like operator not supported");
                         }
                         break;
+                    case "in":
+                        if (e2.Type == typeof(object[]))
+                        {
+                            MethodInfo mis = typeof(Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public).Single(m => m.Name == "Contains" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(object));
+                            result = System.Linq.Expressions.Expression.Call(null, mis, new System.Linq.Expressions.Expression[] { e2, System.Linq.Expressions.Expression.Convert(e1, typeof(object)) });
+
+                            //MethodInfo mi = typeof(Enumerable).GetMethods().Where(m => m.Name == "Contains" && m.GetParameters().Length == 2).Single().MakeGenericMethod(typeof(object));
+                            //result = System.Linq.Expressions.Expression.Call(mi, System.Linq.Expressions.Expression.Convert(e2, typeof(IEnumerable<object>)), System.Linq.Expressions.Expression.Convert(e1, typeof(object)));
+                        } 
+                        else
+                        {
+                            throw new InvalidOperationException("in operator not supported");
+                        }
+                        break;
                     case "==":
                     case "=":
                         result = System.Linq.Expressions.Expression.Equal(e1, e2);
@@ -182,6 +196,17 @@ namespace Afk.Expression
                         break;
                 }
 #endregion
+            }
+            else if (o is object[])
+            {
+                List<System.Linq.Expressions.Expression> items = new List<System.Linq.Expressions.Expression>();
+                foreach (var item in (object[])o)
+                {
+                    items.Add(System.Linq.Expressions.Expression.TypeAs(
+                        BuildLambda(item, parameter, expressionFunc), typeof(object)));
+                }
+                result = System.Linq.Expressions.Expression.NewArrayInit(typeof(object), items.ToArray());
+                //result = System.Linq.Expressions.Expression.Constant(items.ToArray());
             }
             else
             {

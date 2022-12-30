@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="BooleanTest.cs" />
     <Compile Include="ExtractTest.cs" />
+    <Compile Include="FunctionsTest.cs" />
     <Compile Include="NullTest.cs" />
     <Compile Include="PowTest.cs" />
     <Compile Include="FormulaTest.cs" />

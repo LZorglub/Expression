@@ -177,6 +177,12 @@ namespace Afk.Expression
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
                     return DoSpecialOperator(v1, v2, caseSensitivity);
+                case "in":
+                    tv = v2 as IExpression;
+                    if (tv != null)
+                        v2 = tv.Evaluate(correlationId);
+                    if (v1 is null || v2 is null || !(v2 is object[])) return false;
+                    return ((object[])v2).Contains(v1);
                 case "&":
                     tv = v2 as IExpression;
                     if (tv != null)
@@ -369,6 +375,7 @@ namespace Afk.Expression
                 case "==":
                 case "=":
                 case "like":
+                case "in":
                 case "<>":
                 case "!=":
                     return true;

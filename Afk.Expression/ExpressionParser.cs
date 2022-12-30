@@ -366,7 +366,7 @@ namespace Afk.Expression
                     }
                 }
 
-                // Function
+                // Function utilisateur
                 if (mRet == null || mRet.Index > nIdx)
                 {
                     if (regUserFunction != null)
@@ -405,6 +405,43 @@ namespace Afk.Expression
                                 fnc.FunctionHandler += UserFunctionEventHandler;
                             val = fnc;
                         }
+                    }
+                }
+
+                // Well know function
+                if (mRet == null || mRet.Index > nIdx)
+                {
+                    m = DefinedRegex.WellKnowFunctions.Match(Expression, nIdx);
+                    if (m.Success && (mRet == null || m.Index < mRet.Index))
+                    {
+                        mRet = m;
+                        // Function name
+                        string functionName = m.Groups["Function"].Value;
+                        #region Function parameters
+                        ArrayExpression expr = new ArrayExpression(m.Groups["Parenthesis"].Value, this.arguments, this.caseSensitivity, this.operatorType);
+
+                        if (this.UserExpressionEventHandler != null)
+                        {
+                            expr.UserExpressionEventHandler += this.UserExpressionEventHandler;
+                        }
+                        if (this.UserFunctionEventHandler != null)
+                        {
+                            expr.UserFunctionEventHandler += this.UserFunctionEventHandler;
+                        }
+
+                        try
+                        {
+                            val = expr.Evaluate(correlationId);
+                        }
+                        catch (ExpressionException e)
+                        {
+                            // Pos + 1 pour le premier crochet
+                            throw new ExpressionException(e.Message, nIdx + 1 + e.Index, e.Length);
+                        }
+                        #endregion
+
+                        WellKnowFunctionsExpression fnc = new WellKnowFunctionsExpression(functionName, val as object[]);
+                        val = fnc;
                     }
                 }
 

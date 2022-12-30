@@ -54,6 +54,9 @@ namespace Afk.Expression
             @"(?(number)(?!))" +
             @")\)";
 
+        internal const string c_strWellKnowFunctions =
+            @"(?<Function>upper||lower||case||replace)\s*" + DefinedRegex.FunctionParameters;
+
         // Un tableau est composé d'un crochet ouvrant et se termine
         // au n-ième crochet fermant correspondant au n ouvrant. Les crochets
         // située dans les chaines de caractères ne sont pas comptabilisées.
@@ -69,7 +72,7 @@ namespace Afk.Expression
 
         // Les opérateurs binaires sont des opérateurs de test ou d'opération
         // et ne doivent pas être précédés par un aute opérateur binaire
-        private const string c_strBinaryOp = @"<<|>>|\+|-|\*|/|%|&&|\|\||&|\||\^|==|!=|<>|>=|<=|=|<|>|and(?=\b)|or(?=\b)|like(?=\b)";
+        private const string c_strBinaryOp = @"<<|>>|\+|-|\*|/|%|&&|\|\||&|\||\^|==|!=|<>|>=|<=|=|<|>|and(?=\b)|or(?=\b)|like(?=\b)|in(?=\b)";
 
         //		// Les éléments définis par l'utilisateur sont de type chaine commencant par
         //		// une lettre ou un signe $
@@ -108,6 +111,12 @@ namespace Afk.Expression
         // Binaire ne peut suivre un autre opérateur binaire et ne pas être en début de chaine
         internal static Regex BinaryOp = new Regex(
             @"(?<!(?:" + c_strBinaryOp + @")\s*|^\A)(?:" + c_strBinaryOp + @")",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase
+        );
+
+        // Functions système connues
+        internal static Regex WellKnowFunctions = new Regex(
+            c_strWellKnowFunctions,
             RegexOptions.Compiled | RegexOptions.IgnoreCase
         );
 
