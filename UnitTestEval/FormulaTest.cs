@@ -45,6 +45,19 @@ namespace UnitTestEval
         }
 
         [TestMethod]
+        public void TestUnaryOperator()
+        {
+            ExpressionEval eval = new ExpressionEval(" -x");
+            eval.AddVariable("x");
+            eval.UserExpressionEventHandler += (s, e) => {
+                if (e.Name == "x")
+                    e.Result = 8d;
+            };
+            var result = eval.Evaluate();
+            Assert.AreEqual(result, -8d);
+        }
+
+        [TestMethod]
         public void TestArithmetic()
         {
             ExpressionEval eval = new ExpressionEval("5 * x + y");

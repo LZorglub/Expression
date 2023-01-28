@@ -102,9 +102,9 @@ namespace Afk.Expression
             RegexOptions.Compiled | RegexOptions.IgnoreCase
         );
 
-        // Unaire forcement précédé par opérateur binaire ou en début de chaine
+        // Unaire forcement précédé par opérateur binaire ou en début de chaine (en éliminant les espaces)
         internal static Regex UnaryOp = new Regex(
-            @"(?<=(?:" + c_strBinaryOp + @")\s*|\A)(?:" + c_strUnaryOp + @")",
+            @"(?<=(?:" + c_strBinaryOp + @")\s*|\A\s*)(?:" + c_strUnaryOp + @")",
             RegexOptions.Compiled
         );
 

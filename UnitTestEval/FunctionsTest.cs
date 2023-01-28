@@ -40,5 +40,34 @@ namespace UnitTestEval
             eval = new ExpressionEval("replace('one dog', 'o', 'a')");
             Assert.AreEqual("ane dag", eval.Evaluate());
         }
+
+        [TestMethod]
+        public void TestIifFunction()
+        {
+            DateTime now = DateTime.UtcNow;
+            ExpressionEval eval = new ExpressionEval("iif(hour(d + 1/24)>=8 && hour(d)<22, x, -x)");
+            eval.AddVariables(new string[] { "x", "d" });
+            eval.AddFunctions("hour"); eval.AddFunctions("iif");
+            eval.UserExpressionEventHandler += (sender, e) =>
+            {
+                if (e.Name == "d") e.Result = now; else e.Result = 5d;
+            };
+            eval.UserFunctionEventHandler += Eval_UserFunctionEventHandler;
+            var result = eval.Evaluate();
+
+            Assert.AreEqual(5d, result);
+        }
+
+        private void Eval_UserFunctionEventHandler(object sender, UserFunctionEventArgs e)
+        {
+            switch(e.Name) {
+                case "hour":
+                    e.Result = 10;
+                    break;
+                case "iif":
+                    e.Result = (Convert.ToBoolean(e.Parameters[0])) ? e.Parameters[1] : e.Parameters[2];
+                    break;
+            }
+        }
     }
 }
