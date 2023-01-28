@@ -34,11 +34,25 @@ By default the ^ is the logical exclusive OR operator.
 You can change its behavior by using the operator type ***Arithmetic***
 
 ```csharp
-ExpressionEval expr1 = new ExpressionEval("4^2", OperatorType.Arithmetic);
+ExpressionEval eval = new ExpressionEval("4^2", OperatorType.Arithmetic);
 Console.WriteLine(eval.Evaluate());
 >>> 16
 ```
- 
+
+## Dates
+Use the function **@D** to specify date with the format **YYYY-MM-DD HH:MM:SS**. You can specify AM and PM indicator too.
+```
+ExpressionEval eval = new ExpressionEval("@D(2022-03-08) + 1", OperatorType.Arithmetic);
+Console.WriteLine(eval.Evaluate());
+>>> 09/03/2022 00:00:00
+```
+
+Add and substract a number of whole and fractional days with operators **+** and **-**
+```
+@D(2022-08-05) + 1.5
+@D(2022-08-05) - 7
+```
+
 ## Variables
 Expression allows you to use variables evaluated on execution
 ```csharp

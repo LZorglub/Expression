@@ -253,15 +253,15 @@ namespace Afk.Expression
                 // If operands are null do special op
                 switch (this.Op.ToLower())
                 {
-                    case "+": 
+                    case "+":
                     case "-": return null;
                     case "<":
                     case ">":
                     case "<>":
                     case "!=":
                         return false;
-                    case "<=": 
-                    case ">=": 
+                    case "<=":
+                    case ">=":
                     case "like":
                     case "==":
                     case "=": return true;
@@ -285,7 +285,7 @@ namespace Afk.Expression
 
                 switch (this.Op.ToLower())
                 {
-                    case "+": return string.Format("{0}{1}", str1 , str2);
+                    case "+": return string.Format("{0}{1}", str1, str2);
                     case "-": throw new ArgumentException("Operator '-' invalid for strings.");
                     case "<": return (stru1 == null || stru2 == null) ? false : stru1.CompareTo(stru2) < 0;
                     case "<=": return (stru1 == null || stru2 == null) ? false : stru1.CompareTo(stru2) < 0 || stru1 == stru2;
@@ -299,7 +299,7 @@ namespace Afk.Expression
                         return stru1 != stru2;
                 }
             }
-            else if (v1 is DateTime || v2 is DateTime)
+            else if (v1 is DateTime && v2 is DateTime)
             {
                 DateTime
                     d1 = Convert.ToDateTime(v1, CultureInfo.CurrentCulture),
@@ -319,7 +319,51 @@ namespace Afk.Expression
                     case "<>":
                     case "!=": return d1 != d2;
                 }
-            } else if (v1 is null || v2 is null) {
+            }
+            else if (v1 is DateTime && IsNumeric(v2))
+            {
+                DateTime d1 = Convert.ToDateTime(v1, CultureInfo.CurrentCulture);
+                double d2 = Convert.ToDouble(v2, CultureInfo.InvariantCulture);
+
+                switch (this.Op.ToLower())
+                {
+                    case "+": return d1.AddDays(d2);
+                    case "-": return d1.AddDays(-d2);
+                    case "<": 
+                    case "<=":
+                    case ">": 
+                    case ">=":
+                    case "like":
+                    case "==":
+                    case "=": 
+                    case "<>":
+                    case "!=":
+                        throw new ArgumentException($"Operator '{this.Op}' invalid for date and numeric.");
+                }
+            }
+            else if (IsNumeric(v1) && v2 is DateTime)
+            {
+                double d1 = Convert.ToDouble(v1, CultureInfo.InvariantCulture);
+                DateTime d2 = Convert.ToDateTime(v2, CultureInfo.CurrentCulture);
+
+                switch (this.Op.ToLower())
+                {
+                    case "+": return d2.AddDays(d1);
+                    case "-": 
+                    case "<":
+                    case "<=":
+                    case ">":
+                    case ">=":
+                    case "like":
+                    case "==":
+                    case "=":
+                    case "<>":
+                    case "!=":
+                        throw new ArgumentException($"Operator '{this.Op}' invalid for numeric and date.");
+                }
+            }
+            else if (v1 is null || v2 is null)
+            {
                 // One operand is null, another must match a double
                 switch (this.Op.ToLower())
                 {
@@ -381,6 +425,29 @@ namespace Afk.Expression
                     return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Gets a value which indicates whether the expression is numeric
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static bool IsNumeric(object expression)
+        {
+            if (expression == null)
+                return false;
+
+            return expression is sbyte
+                    || expression is byte
+                    || expression is short
+                    || expression is ushort
+                    || expression is int
+                    || expression is uint
+                    || expression is long
+                    || expression is ulong
+                    || expression is float
+                    || expression is double
+                    || expression is decimal;
         }
     }
 }

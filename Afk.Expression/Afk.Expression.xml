@@ -179,6 +179,13 @@
             <param name="caseSensitivity"></param>
             <returns></returns>
         </member>
+        <member name="M:Afk.Expression.BinaryOp.IsNumeric(System.Object)">
+            <summary>
+            Gets a value which indicates whether the expression is numeric
+            </summary>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
         <member name="T:Afk.Expression.BinaryOpPriority">
             <summary>
             Provides priority on operator
