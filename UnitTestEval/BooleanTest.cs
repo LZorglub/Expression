@@ -1,10 +1,4 @@
 ﻿using Afk.Expression;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTestEval
 {
@@ -19,7 +13,7 @@ namespace UnitTestEval
             eval.AddVariable("PRM.Attribut.TEST2"); // => MUST MATCH Before first variable
 
             eval.UserExpressionEventHandler += Eval_UserExpressionEventHandler;
-            Assert.AreEqual(eval.Evaluate(), true);
+            Assert.AreEqual(true, eval.Evaluate());
         }
 
         [TestMethod]
@@ -30,7 +24,7 @@ namespace UnitTestEval
             eval.AddVariable("PRM.Attribut.TEST-A2"); // => Minus sign must be in quote
 
             eval.UserExpressionEventHandler += Eval_UserExpressionEventHandler;
-            Assert.AreEqual(true, eval.Evaluate());
+            Assert.AreEqual(eval.Evaluate(), true);
         }
 
         private void Eval_UserExpressionEventHandler(object sender, UserExpressionEventArgs e)

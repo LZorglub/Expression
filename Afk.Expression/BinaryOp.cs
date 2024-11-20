@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Afk.Expression
 {
@@ -123,6 +120,12 @@ namespace Afk.Expression
             if (v1 is IExpression tv)
                 v1 = tv.Evaluate(correlationId);
 
+            if (v1 is ICustomOperand)
+            {
+                object value = (v2 is IExpression) ? ((IExpression)v2).Evaluate(correlationId) : v2;
+                return ((ICustomOperand)v1).HandleOperation(this.Op.ToLower(), v2, true);
+            }
+
             // La deuxieme opérande est évalué suivant l'opérateur (les opérateurs
             // logiques ne nécessitent pas l'évaluation de v2 si v1 est déjà respecté)
             switch (this.Op.ToLower())
@@ -131,6 +134,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     return (Convert.ToDouble(v1, CultureInfo.InvariantCulture) *
                               Convert.ToDouble(v2, CultureInfo.InvariantCulture));
@@ -138,6 +142,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     return (Convert.ToDouble(v1, CultureInfo.InvariantCulture) /
                               Convert.ToDouble(v2, CultureInfo.InvariantCulture));
@@ -145,6 +150,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     return (Convert.ToInt64(v1, CultureInfo.InvariantCulture) %
                               Convert.ToInt64(v2, CultureInfo.InvariantCulture));
@@ -152,6 +158,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     return (Convert.ToInt64(v1, CultureInfo.InvariantCulture) <<
                                Convert.ToInt32(v2, CultureInfo.InvariantCulture));
@@ -159,6 +166,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     return (Convert.ToInt64(v1, CultureInfo.InvariantCulture) >>
                                Convert.ToInt32(v2, CultureInfo.InvariantCulture));
@@ -176,17 +184,20 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     return DoSpecialOperator(v1, v2, caseSensitivity);
                 case "in":
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null || !(v2 is object[])) return false;
                     return ((object[])v2).Contains(v1);
                 case "&":
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     return (Convert.ToUInt64(v1, CultureInfo.InvariantCulture) &
                               Convert.ToUInt64(v2, CultureInfo.InvariantCulture));
@@ -194,6 +205,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     if (this.OperatorType == OperatorType.Arithmetic)
                     {
@@ -208,6 +220,7 @@ namespace Afk.Expression
                     tv = v2 as IExpression;
                     if (tv != null)
                         v2 = tv.Evaluate(correlationId);
+                    if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                     if (v1 is null || v2 is null) return null;
                     return (Convert.ToUInt64(v1, CultureInfo.InvariantCulture) |
                               Convert.ToUInt64(v2, CultureInfo.InvariantCulture));
@@ -220,6 +233,7 @@ namespace Afk.Expression
                         tv = v2 as IExpression;
                         if (tv != null)
                             v2 = tv.Evaluate(correlationId);
+                        if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                         return (Convert.ToBoolean(v1, CultureInfo.InvariantCulture) &&
                             Convert.ToBoolean(v2, CultureInfo.InvariantCulture));
                     }
@@ -232,6 +246,7 @@ namespace Afk.Expression
                         tv = v2 as IExpression;
                         if (tv != null)
                             v2 = tv.Evaluate(correlationId);
+                        if (v2 is ICustomOperand) return ((ICustomOperand)v2).HandleOperation(Op.ToLower(), v1, false);
                         return (Convert.ToBoolean(v1, CultureInfo.InvariantCulture) ||
                             Convert.ToBoolean(v2, CultureInfo.InvariantCulture));
                     }

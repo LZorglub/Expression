@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Afk.Expression {
+﻿namespace Afk.Expression
+{
     /// <summary>
     /// Represents a binary node visitor
     /// </summary>

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Afk.Expression
 {
@@ -14,7 +11,7 @@ namespace Afk.Expression
         public event UserFunctionEventHandler FunctionHandler;
 
         /// <summary>
-        /// Initialize a new isntance of <see cref="FunctionExpression"/>
+        /// Initialize a new instance of <see cref="FunctionExpression"/>
         /// </summary>
         /// <param name="expression"></param>
         /// <param name="parameters"></param>

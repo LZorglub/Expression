@@ -1,10 +1,4 @@
 ﻿using Afk.Expression;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTestEval
 {
@@ -15,7 +9,7 @@ namespace UnitTestEval
         public void TestSimpleExtract()
         {
             IEnumerable<string> userExpressions = ExpressionEval.Extract("5 * (3 + 8)");
-            Assert.AreEqual(userExpressions.Count(), 0);
+            Assert.AreEqual(0, userExpressions.Count());
         }
 
         [TestMethod]

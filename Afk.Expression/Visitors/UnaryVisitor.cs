@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Afk.Expression
+﻿namespace Afk.Expression
 {
     /// <summary>
     /// Represents an unary node visitor

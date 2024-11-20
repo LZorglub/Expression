@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Afk.Expression
 {
@@ -54,7 +50,7 @@ namespace Afk.Expression
         }
 
         /// <summary>
-        /// Reduces a bianry node
+        /// Reduces a binary node
         /// </summary>
         /// <returns></returns>
         public object Reduce()

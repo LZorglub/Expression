@@ -96,6 +96,42 @@ Console.WriteLine(eval.Evaluate());
 >>> The dogs barks
 ```
 
+## Custom operand
+You can define custom operand to intercept binary operation on user expression if default operation don't meet your needs.
+```csharp
+class CustomStringOperand : ICustomOperand
+{
+    private readonly string customValue;
+
+    public CustomStringOperand(string customValue)
+    {
+        this.customValue = customValue;
+    }
+
+    public object HandleOperation(string @operator, object otherOperand, bool isLeftOperand)
+    {
+        if (@operator == "+" && otherOperand != null)
+        {
+            return (isLeftOperand) ? $"{customValue}/{otherOperand}" : $"{otherOperand}/{customValue}";
+        }
+        return string.Empty;
+    }
+}
+
+private void OnFunctionHandler(object sender, UserFunctionEventArgs e)
+{
+    if (e.Name == "val1")
+    {
+        e.Result = new CustomStringOperand("dogs");
+    }
+}
+
+ExpressionEval eval = new ExpressionEval("val1 + 'cats'");
+eval.UserFunctionEventHandler += OnFunctionHandler;
+Console.WriteLine(eval.Evaluate());
+>>> dogs/cats
+```
+
 ## EF Core
 Expression can be used to generate *System.Linq.Expressions.Expression* to request *DbContext*.
 You need to define a **ILambdaExpressionProvider** which provides expression on your entity.
@@ -157,5 +193,4 @@ Console.WriteLine(lambda.ToString());
 >>> "s => value(Microsoft.EntityFrameworkCore.DbFunctions).Like(s.Name, \"8000%\")"
 ```
 
-# External Links
 

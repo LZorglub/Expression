@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Afk.Expression", "Afk.Expression\Afk.Expression.csproj", "{CE67BF92-4652-414E-9323-9C895AF50BD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestEval", "UnitTestEval\UnitTestEval.csproj", "{76FC0BE8-2E52-4EE6-B70A-8CFC3D3E27F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestEval", "UnitTestEval\UnitTestEval.csproj", "{76FC0BE8-2E52-4EE6-B70A-8CFC3D3E27F6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F7FFE8AF-2DA1-4966-ABE7-ADBC88E8E696}"
 	ProjectSection(SolutionItems) = preProject

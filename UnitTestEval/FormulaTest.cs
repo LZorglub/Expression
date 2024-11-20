@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Afk.Expression;
-using System.Collections.Generic;
+﻿using Afk.Expression;
 using System.Reflection;
 
 namespace UnitTestEval
@@ -13,21 +10,21 @@ namespace UnitTestEval
         public void TestSimpleFormula()
         {
             ExpressionEval eval = new ExpressionEval("5 * (3 + 8)");
-            Assert.AreEqual(eval.Evaluate(), 55d);
+            Assert.AreEqual(55d, eval.Evaluate());
         }
 
         [TestMethod]
         public void TestDoubleValue()
         {
             ExpressionEval eval = new ExpressionEval("5.8");
-            Assert.AreEqual(eval.Evaluate(), 5.8d);
+            Assert.AreEqual(5.8d, eval.Evaluate());
         }
 
         [TestMethod]
         public void TestSimpleStringFormula()
         {
             ExpressionEval eval = new ExpressionEval("'one ' + 'and' + ' two'");
-            Assert.AreEqual(eval.Evaluate(), "one and two");
+            Assert.AreEqual("one and two", eval.Evaluate());
         }
 
         [TestMethod]
@@ -41,7 +38,7 @@ namespace UnitTestEval
         public void TestBoolean()
         {
             ExpressionEval eval = new ExpressionEval("true or false");
-            Assert.AreEqual(eval.Evaluate(), true);
+            Assert.AreEqual(true, eval.Evaluate());
         }
 
         [TestMethod]
@@ -54,7 +51,7 @@ namespace UnitTestEval
                     e.Result = 8d;
             };
             var result = eval.Evaluate();
-            Assert.AreEqual(result, -8d);
+            Assert.AreEqual(-8d, result);
         }
 
         [TestMethod]
@@ -69,7 +66,7 @@ namespace UnitTestEval
                     e.Result = 5d;
             }; 
             var result = eval.Evaluate();
-            Assert.AreEqual(result, 45d);
+            Assert.AreEqual(45d, result);
         }
 
         [TestMethod]
@@ -80,7 +77,7 @@ namespace UnitTestEval
             eval.AddConstant("y", 2);
             eval.AddConstant("z", 3);
             var result = eval.Evaluate();
-            Assert.AreEqual(result, 39d);
+            Assert.AreEqual(39d, result);
         }
 
         [TestMethod]
@@ -91,7 +88,7 @@ namespace UnitTestEval
             eval.AddConstant("y", 2);
             eval.AddConstant("z", 3);
             var result = eval.Evaluate();
-            Assert.AreEqual(result, 39d);
+            Assert.AreEqual(39d, result);
         }
 
         [TestMethod]
@@ -103,7 +100,7 @@ namespace UnitTestEval
             eval.AddConstant("Xx", 3);
             
             var result = eval.Evaluate();
-            Assert.AreEqual(result, 39d);
+            Assert.AreEqual(39d, result);
         }
 
         [TestMethod]
@@ -114,7 +111,7 @@ namespace UnitTestEval
             eval.AddVariable("var2");
             eval.UserExpressionEventHandler += OnUserExpression;
             var result = eval.Evaluate();
-            Assert.AreEqual(result, 9d);
+            Assert.AreEqual(9d, result);
         }
 
         [TestMethod]
@@ -126,10 +123,10 @@ namespace UnitTestEval
             eval.UserExpressionEventHandler += OnUserExpression;
             var result = eval.Evaluate();
             Assert.IsInstanceOfType(result, typeof(object[]));
-            object[] values = result as object[];
-            Assert.AreEqual(values[0], 9d);
-            Assert.AreEqual(values[1], 49d);
-            Assert.AreEqual(values[2], "un deux");
+            object[] values = (result as object[])!;
+            Assert.AreEqual(9d, values[0]);
+            Assert.AreEqual(49d, values[1]);
+            Assert.AreEqual("un deux", values[2]);
         }
 
         [TestMethod]
@@ -147,7 +144,7 @@ namespace UnitTestEval
             eval.UserFunctionEventHandler += OnFunctionHandler;
             var result = eval.Evaluate();
 
-            Assert.AreEqual(result, "quand la caravane PASSE les chiens aboient.");
+            Assert.AreEqual("quand la caravane PASSE les chiens aboient.", result);
         }
 
         [TestMethod]
@@ -170,8 +167,8 @@ namespace UnitTestEval
                 (e, name) => System.Linq.Expressions.Expression.Property(e, "Length"))
                 .Compile();
 
-            Assert.AreEqual(lambda("test"), 12);
-            Assert.AreEqual(lambda("12345678"), 16);
+            Assert.AreEqual(12, lambda("test"));
+            Assert.AreEqual(16, lambda("12345678"));
         }
 
         [TestMethod]
@@ -183,7 +180,7 @@ namespace UnitTestEval
 
             var lambda = ExpressionHelper.BuildLambda<Dictionary<string,int>, int>(expr,
                 (e, name) => {
-                    MethodInfo mi = e.Type.GetMethod("get_Item");
+                    MethodInfo mi = e.Type.GetMethod("get_Item")!;
                     return System.Linq.Expressions.Expression.Call(e, mi, System.Linq.Expressions.Expression.Constant(name));
                 })
                 .Compile();
@@ -233,7 +230,7 @@ namespace UnitTestEval
 
             var lambdaXY = ExpressionHelper.BuildLambda<Dictionary<string, double>, bool>(expr,
                 (e, name) => {
-                    MethodInfo mi = e.Type.GetMethod("get_Item");
+                    MethodInfo mi = e.Type.GetMethod("get_Item")!;
                     return System.Linq.Expressions.Expression.Call(e, mi, System.Linq.Expressions.Expression.Constant(name));
                 })
                 .Compile();
@@ -247,7 +244,7 @@ namespace UnitTestEval
 
             var lambdaXYZ = ExpressionHelper.BuildLambda<Dictionary<string, double>, bool>(expr,
                 (e, name) => {
-                    MethodInfo mi = e.Type.GetMethod("get_Item");
+                    MethodInfo mi = e.Type.GetMethod("get_Item")!;
                     return System.Linq.Expressions.Expression.Call(e, mi, System.Linq.Expressions.Expression.Constant(name));
                 })
                 .Compile();
@@ -265,7 +262,7 @@ namespace UnitTestEval
             }
             else if (e.Name == "Upper")
             {
-                e.Result = e.Parameters[0].ToString().ToUpper();
+                e.Result = e.Parameters[0].ToString()!.ToUpper();
             }
         }
 
