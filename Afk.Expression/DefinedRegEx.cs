@@ -67,7 +67,7 @@ namespace Afk.Expression
 
         // Les opérateurs binaires sont des opérateurs de test ou d'opération
         // et ne doivent pas être précédés par un aute opérateur binaire
-        private const string c_strBinaryOp = @"<<|>>|\+|-|\*|/|%|&&|\|\||&|\||\^|==|!=|<>|>=|<=|=|<|>|and(?=\b)|or(?=\b)|like(?=\b)|in(?=\b)";
+        private const string c_strBinaryOp = @"<<|>>|\+|-|\*|/|%|&&|\|\||&|\||\^|==|!=|<>|>=|<=|=|<|>|and\b|or\b|like\b|in\b";
 
         //		// Les éléments définis par l'utilisateur sont de type chaine commencant par
         //		// une lettre ou un signe $

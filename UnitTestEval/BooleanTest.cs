@@ -1,4 +1,5 @@
 ﻿using Afk.Expression;
+using System.Text;
 
 namespace UnitTestEval
 {
@@ -25,6 +26,13 @@ namespace UnitTestEval
 
             eval.UserExpressionEventHandler += Eval_UserExpressionEventHandler;
             Assert.AreEqual(eval.Evaluate(), true);
+        }
+
+        [TestMethod]
+        public void TestUnary()
+        {
+            ExpressionEval eval = new ExpressionEval("true and !false", CaseSensitivity.None);
+            Assert.AreEqual(true, eval.Evaluate());
         }
 
         private void Eval_UserExpressionEventHandler(object sender, UserExpressionEventArgs e)
